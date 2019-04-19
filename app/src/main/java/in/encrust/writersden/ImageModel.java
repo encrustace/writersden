@@ -3,7 +3,7 @@ package in.encrust.writersden;
 import android.net.Uri;
 
 public class ImageModel {
-    public Uri image;
+    private Uri image;
 
     public ImageModel() {
     }

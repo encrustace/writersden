@@ -19,7 +19,7 @@ public class FontAdapter extends RecyclerView.Adapter<FontAdapter.FontHolder> {
     private List<Typeface> fontList;
     private List<String> fontNameList;
 
-    public FontAdapter(Context context, List<Typeface> fontList, List<String> fontNameList) {
+    FontAdapter(Context context, List<Typeface> fontList, List<String> fontNameList) {
         this.context = context;
         this.fontList = fontList;
         this.fontNameList = fontNameList;
@@ -58,10 +58,10 @@ public class FontAdapter extends RecyclerView.Adapter<FontAdapter.FontHolder> {
         return fontList.size();
     }
 
-    public class FontHolder extends RecyclerView.ViewHolder {
+    class FontHolder extends RecyclerView.ViewHolder {
         TextView fontView;
 
-        public FontHolder(@NonNull View itemView) {
+        FontHolder(@NonNull View itemView) {
             super(itemView);
 
             fontView = itemView.findViewById(R.id.fonts_fontview);

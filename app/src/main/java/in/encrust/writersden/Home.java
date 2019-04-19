@@ -34,10 +34,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,9 +61,8 @@ public class Home extends AppCompatActivity {
     private ConstraintLayout imageConst, itemConst, stylingConst;
     private float x_cord, y_cord;
     private ImageView imageView;
-    private Button donateButton, shareButton;
-    private ImageButton imageButton, textButton;
-    private Button colorButton, sizeButton, fontButton, removeButton, editButton, rotateButton;
+    private Button sizeButton;
+    private Button rotateButton;
     private SeekBar seekBarSize, seekBarRotate;
     private int id = 0;
     private Vibrator vibrator;
@@ -82,18 +79,18 @@ public class Home extends AppCompatActivity {
         imageConst = findViewById(R.id.home_imageconst);
         imageView = findViewById(R.id.home_image);
         itemConst = findViewById(R.id.home_itemconst);
-        donateButton = findViewById(R.id.home_donate);
-        shareButton = findViewById(R.id.home_share);
-        imageButton = findViewById(R.id.home_imagebutton);
-        textButton = findViewById(R.id.home_textbutton);
+        Button donateButton = findViewById(R.id.home_donate);
+        Button shareButton = findViewById(R.id.home_share);
+        ImageButton imageButton = findViewById(R.id.home_imagebutton);
+        ImageButton textButton = findViewById(R.id.home_textbutton);
         recyclerView = findViewById(R.id.home_recycler);
         stylingConst = findViewById(R.id.home_stylingconst);
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        colorButton = findViewById(R.id.home_textcolor);
+        Button colorButton = findViewById(R.id.home_textcolor);
         sizeButton = findViewById(R.id.home_textsize);
-        fontButton = findViewById(R.id.home_textfont);
-        removeButton = findViewById(R.id.home_textremove);
-        editButton = findViewById(R.id.home_edittext);
+        Button fontButton = findViewById(R.id.home_textfont);
+        Button removeButton = findViewById(R.id.home_textremove);
+        Button editButton = findViewById(R.id.home_edittext);
         rotateButton = findViewById(R.id.home_textrotate);
         seekBarSize = findViewById(R.id.home_seekbarsize);
         seekBarRotate = findViewById(R.id.home_seekbarrotate);
@@ -122,9 +119,8 @@ public class Home extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = takeScreenshot();
-                saveBitmap(bitmap);
-                //Share
+                askName();
+                //save
             }
         });
 
@@ -505,11 +501,31 @@ public class Home extends AppCompatActivity {
         return b;
     }
 
-    public void saveBitmap(Bitmap bitmap) {
+    public void askName(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText name = new EditText(this);
+        name.setGravity(Gravity.CENTER);
+        builder.setView(name);
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Bitmap bitmap = takeScreenshot();
+                saveBitmap(bitmap, name.getText().toString());
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        String fileName = "/" + timeStamp + ".png";
-        File path = new File(Environment.getExternalStorageDirectory() + fileName);
+            }
+        });
+
+        builder.show();
+    }
+
+
+    public void saveBitmap(Bitmap bitmap, String name) {
+        String fileName = name + ".png";
+        File path = new File(Environment.getExternalStorageDirectory() +"/" + fileName);
         FileOutputStream fileOutputStream;
         try {
             fileOutputStream = new FileOutputStream(path);
@@ -565,7 +581,7 @@ public class Home extends AppCompatActivity {
         ConstraintLayout.LayoutParams dEditTextParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         dEditText.setLayoutParams(dEditTextParams);
         dEditText.setId(editId);
-        dEditText.setGravity(Gravity.CENTER);
+        //dEditText.setGravity(Gravity.CENTER);
         dEditText.setText(text);
 
         ConstraintLayout.LayoutParams leftButtonParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
@@ -615,6 +631,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 currentText.setText(dEditText.getText());
+                currentText.setGravity(dEditText.getGravity());
 
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -627,7 +644,7 @@ public class Home extends AppCompatActivity {
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dEditText.setGravity(Gravity.LEFT);
+                dEditText.setGravity(Gravity.START);
             }
         });
 
@@ -641,7 +658,7 @@ public class Home extends AppCompatActivity {
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dEditText.setGravity(Gravity.RIGHT);
+                dEditText.setGravity(Gravity.END);
             }
         });
 
@@ -763,7 +780,7 @@ public class Home extends AppCompatActivity {
             builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    createText(dEditText.getText().toString());
+                    createText(dEditText.getText().toString(), dEditText.getGravity());
                 }
             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
@@ -775,7 +792,7 @@ public class Home extends AppCompatActivity {
             leftButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dEditText.setGravity(Gravity.LEFT);
+                    dEditText.setGravity(Gravity.START);
                 }
             });
 
@@ -789,7 +806,7 @@ public class Home extends AppCompatActivity {
             rightButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dEditText.setGravity(Gravity.RIGHT);
+                    dEditText.setGravity(Gravity.END);
                 }
             });
 
@@ -801,7 +818,7 @@ public class Home extends AppCompatActivity {
 
     }
 
-    public void createText(String text) {
+    public void createText(String text, Integer gravity) {
 
         ConstraintSet set = new ConstraintSet();
         set.clone(imageConst);
@@ -810,6 +827,7 @@ public class Home extends AppCompatActivity {
         textArray[id].setId(id);
         textArray[id].setClickable(true);
         textArray[id].setPadding(8, 8, 8, 8);
+        textArray[id].setGravity(gravity);
         imageConst.addView(textArray[id]);
         set.connect(textArray[id].getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
         set.connect(textArray[id].getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
@@ -1002,8 +1020,6 @@ public class Home extends AppCompatActivity {
                         1);
             }
 
-        } else {
-
         }
     }
 
@@ -1011,13 +1027,11 @@ public class Home extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Permission Granted
                 } else {
                     //Not  granted
                 }
-                return;
             }
         }
     }

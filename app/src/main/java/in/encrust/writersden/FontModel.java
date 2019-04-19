@@ -3,8 +3,8 @@ package in.encrust.writersden;
 import android.graphics.Typeface;
 
 public class FontModel {
-    public Typeface customfont;
-    public String fontname;
+    private Typeface customfont;
+    private String fontname;
 
     public FontModel() {
     }

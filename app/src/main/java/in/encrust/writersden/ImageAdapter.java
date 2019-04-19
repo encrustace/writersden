@@ -16,7 +16,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     private Context context;
     private List<Drawable> imageList;
 
-    public ImageAdapter(Context context, List<Drawable> imageList) {
+    ImageAdapter(Context context, List<Drawable> imageList) {
         this.context = context;
         this.imageList = imageList;
     }
@@ -54,10 +54,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return imageList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.images);
