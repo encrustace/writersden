@@ -29,16 +29,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,6 +39,17 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class Home extends AppCompatActivity {
@@ -919,12 +920,12 @@ public class Home extends AppCompatActivity {
         ConstraintLayout fontConst = new ConstraintLayout(this);
         ConstraintLayout.LayoutParams fontConstParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         fontConst.setLayoutParams(fontConstParams);
-        fontConst.setId(000);
+        fontConst.setId(0);
 
         fontTextView = new TextView(this);
         ConstraintLayout.LayoutParams fontTextViewParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         fontTextView.setLayoutParams(fontTextViewParams);
-        fontTextView.setId(00);
+        fontTextView.setId(0);
         fontTextView.setMaxLines(1);
         fontTextView.setText(text);
         fontTextView.setGravity(Gravity.CENTER);
