@@ -1,0 +1,947 @@
+package `in`.encrust.writersden
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Bundle
+import android.os.Environment
+import android.os.StrictMode
+import android.util.Log
+import android.util.TypedValue
+import android.view.GestureDetector
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import yuku.ambilwarna.AmbilWarnaDialog
+import java.io.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.Array as Array1
+import kotlin.arrayOf as arrayOf1
+
+class Home : AppCompatActivity() {
+    private var imageList: ArrayList<Drawable>? = null
+    private var fontList: ArrayList<Typeface>? = null
+    private var fontNamesList: List<String>? = null
+    private var position: Int = 0
+    private var fontTextView: TextView? = null
+    private var imageConst: ConstraintLayout? = null
+    private var itemConst: ConstraintLayout? = null
+    private var stylingConst: ConstraintLayout? = null
+    private var x_cord: Float = 0.toFloat()
+    private var y_cord: Float = 0.toFloat()
+    private var imageView: ImageView? = null
+    private var sizeButton: Button? = null
+    private var rotateButton: Button? = null
+    private var sizeMinus: Button? = null
+    private var seekBarSize: SeekBar? = null
+    private var sizePlus: Button? = null
+    private var rotateMinus: Button? = null
+    private var seekBarRotate: SeekBar? = null
+    private var rotatePlus: Button? = null
+    private var id = 0
+    private var textArray: ArrayList<TextView>? = null
+    private var currentText: TextView? = null
+    private var recyclerView: RecyclerView? = null
+    private var gestureDetector: GestureDetector? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.home)
+
+        imageConst = findViewById(R.id.home_imageconst)
+        imageView = findViewById(R.id.home_image)
+        itemConst = findViewById(R.id.home_itemconst)
+        val donateButton = findViewById<Button>(R.id.home_donate)
+        val shareButton = findViewById<Button>(R.id.home_share)
+        val imageButton = findViewById<ImageButton>(R.id.home_imagebutton)
+        val textButton = findViewById<ImageButton>(R.id.home_textbutton)
+        recyclerView = findViewById(R.id.home_recycler)
+        stylingConst = findViewById(R.id.home_stylingconst)
+        val colorButton = findViewById<Button>(R.id.home_textcolor)
+        sizeButton = findViewById(R.id.home_textsize)
+        val fontButton = findViewById<Button>(R.id.home_textfont)
+        findViewById<Button>(R.id.home_textremove)
+        val editButton = findViewById<Button>(R.id.home_edittext)
+        rotateButton = findViewById(R.id.home_textrotate)
+        sizeMinus = findViewById(R.id.seekbarsize_left)
+        seekBarSize = findViewById(R.id.home_seekbarsize)
+        sizePlus = findViewById(R.id.seekbarsize_right)
+        rotateMinus = findViewById(R.id.seekbarrotate_left)
+        seekBarRotate = findViewById(R.id.home_seekbarrotate)
+        rotatePlus = findViewById(R.id.seekbarrotate_right)
+        gestureDetector = GestureDetector(this, SingleTapConfirm())
+
+
+        textArray = ArrayList()
+        textArray!!.add(TextView(this))
+        textArray!!.add(TextView(this))
+        textArray!!.add(TextView(this))
+        textArray!!.add(TextView(this))
+        textArray!!.add(TextView(this))
+
+        makeImageList()
+        makeFontList()
+        stylingConst!!.visibility = View.INVISIBLE
+        sizeMinus!!.visibility = View.INVISIBLE
+        seekBarSize!!.visibility = View.INVISIBLE
+        sizePlus!!.visibility = View.INVISIBLE
+        rotateMinus!!.visibility = View.INVISIBLE
+        seekBarRotate!!.visibility = View.INVISIBLE
+        rotatePlus!!.visibility = View.INVISIBLE
+
+        selectImage(1)
+
+        askPermissions()
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+
+        shareButton.setOnClickListener {
+            val bitmap = takeScreenshot()
+            saveBitmap(bitmap)
+            //save
+        }
+
+        textButton.setOnClickListener { createTextBuilder() }
+
+        donateButton.setOnClickListener { donateDev() }
+
+        imageButton.setOnClickListener {
+            recyclerView!!.visibility = View.VISIBLE
+            itemConst!!.visibility = View.INVISIBLE
+            loadImages()
+        }
+
+        imageConst!!.setOnClickListener {
+            textArray!![0].background = null
+            textArray!![1].background = null
+            textArray!![2].background = null
+            textArray!![3].background = null
+            textArray!![4].background = null
+            stylingConst!!.visibility = View.INVISIBLE
+            itemConst!!.visibility = View.VISIBLE
+            recyclerView!!.visibility = View.INVISIBLE
+            sizeMinus!!.visibility = View.INVISIBLE
+            seekBarSize!!.visibility = View.INVISIBLE
+            sizePlus!!.visibility = View.INVISIBLE
+            rotateMinus!!.visibility = View.INVISIBLE
+            seekBarRotate!!.visibility = View.INVISIBLE
+            rotatePlus!!.visibility = View.INVISIBLE
+        }
+
+
+        /////Move & decoration///////////////////
+
+        if (textArray!![0] != null) {
+
+            textArray!![0].setOnTouchListener(View.OnTouchListener { v, event ->
+                if (gestureDetector!!.onTouchEvent(event)) {
+
+                    if (stylingConst!!.isShown) {
+                        stylingConst!!.visibility = View.INVISIBLE
+                        textArray!![0].background = null
+                        itemConst!!.visibility = View.VISIBLE
+                    } else {
+                        stylingConst!!.visibility = View.VISIBLE
+                        textArray!![0].background = getDrawable(R.drawable.highlight)
+                        textArray!![1].background = null
+                        textArray!![2].background = null
+                        textArray!![3].background = null
+                        textArray!![4].background = null
+                        itemConst!!.visibility = View.INVISIBLE
+                        currentText = textArray!![0]
+                        sizeButton!!.text = "Size: " + currentText!!.textSize
+                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    }
+
+                    true
+                } else {
+
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            x_cord = v.x - event.rawX
+                            y_cord = v.y - event.rawY
+                        }
+
+                        MotionEvent.ACTION_MOVE -> v.animate()
+                                .x(event.rawX + x_cord)
+                                .y(event.rawY + y_cord)
+                                .setDuration(0)
+                                .start()
+
+                        else -> return@OnTouchListener false
+                    }
+                    false
+                }
+            })
+
+        }
+
+        if (textArray!![1] != null) {
+
+            textArray!![1].setOnTouchListener(View.OnTouchListener { v, event ->
+                if (gestureDetector!!.onTouchEvent(event)) {
+
+                    if (stylingConst!!.isShown) {
+                        stylingConst!!.visibility = View.INVISIBLE
+                        textArray!![1].background = null
+                        itemConst!!.visibility = View.VISIBLE
+                    } else {
+                        stylingConst!!.visibility = View.VISIBLE
+                        textArray!![1].background = getDrawable(R.drawable.highlight)
+                        textArray!![0].background = null
+                        textArray!![2].background = null
+                        textArray!![3].background = null
+                        textArray!![4].background = null
+                        itemConst!!.visibility = View.INVISIBLE
+                        currentText = textArray!![1]
+                        sizeButton!!.text = "Size: " + currentText!!.textSize
+                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    }
+
+                    true
+                } else {
+
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            x_cord = v.x - event.rawX
+                            y_cord = v.y - event.rawY
+                        }
+
+                        MotionEvent.ACTION_MOVE -> v.animate()
+                                .x(event.rawX + x_cord)
+                                .y(event.rawY + y_cord)
+                                .setDuration(0)
+                                .start()
+
+                        else -> return@OnTouchListener false
+                    }
+                    false
+                }
+            })
+
+        }
+
+
+        if (textArray!![2] != null) {
+
+            textArray!![2].setOnTouchListener(View.OnTouchListener { v, event ->
+                if (gestureDetector!!.onTouchEvent(event)) {
+
+                    if (stylingConst!!.isShown) {
+                        stylingConst!!.visibility = View.INVISIBLE
+                        textArray!![2].background = null
+                        itemConst!!.visibility = View.VISIBLE
+                    } else {
+                        stylingConst!!.visibility = View.VISIBLE
+                        textArray!![2].background = getDrawable(R.drawable.highlight)
+                        textArray!![0].background = null
+                        textArray!![1].background = null
+                        textArray!![3].background = null
+                        textArray!![4].background = null
+                        itemConst!!.visibility = View.INVISIBLE
+                        currentText = textArray!![2]
+                        sizeButton!!.text = "Size: " + currentText!!.textSize
+                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    }
+
+                    true
+                } else {
+
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            x_cord = v.x - event.rawX
+                            y_cord = v.y - event.rawY
+                        }
+
+                        MotionEvent.ACTION_MOVE -> v.animate()
+                                .x(event.rawX + x_cord)
+                                .y(event.rawY + y_cord)
+                                .setDuration(0)
+                                .start()
+
+                        else -> return@OnTouchListener false
+                    }
+                    false
+                }
+            })
+
+        }
+
+
+        if (textArray!![3] != null) {
+
+
+            textArray!![3].setOnTouchListener(View.OnTouchListener { v, event ->
+                if (gestureDetector!!.onTouchEvent(event)) {
+
+                    if (stylingConst!!.isShown) {
+                        stylingConst!!.visibility = View.INVISIBLE
+                        textArray!![3].background = null
+                        itemConst!!.visibility = View.VISIBLE
+                    } else {
+                        stylingConst!!.visibility = View.VISIBLE
+                        textArray!![3].background = getDrawable(R.drawable.highlight)
+                        textArray!![0].background = null
+                        textArray!![1].background = null
+                        textArray!![2].background = null
+                        textArray!![4].background = null
+                        itemConst!!.visibility = View.INVISIBLE
+                        currentText = textArray!![3]
+                        sizeButton!!.text = "Size: " + currentText!!.textSize
+                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    }
+
+                    true
+                } else {
+
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            x_cord = v.x - event.rawX
+                            y_cord = v.y - event.rawY
+                        }
+
+                        MotionEvent.ACTION_MOVE -> v.animate()
+                                .x(event.rawX + x_cord)
+                                .y(event.rawY + y_cord)
+                                .setDuration(0)
+                                .start()
+
+                        else -> return@OnTouchListener false
+                    }
+                    false
+                }
+            })
+
+        }
+
+        if (textArray!![4] != null) {
+
+            textArray!![4].setOnTouchListener(View.OnTouchListener { v, event ->
+                if (gestureDetector!!.onTouchEvent(event)) {
+
+                    if (stylingConst!!.isShown) {
+                        stylingConst!!.visibility = View.INVISIBLE
+                        textArray!![4].background = null
+                        itemConst!!.visibility = View.VISIBLE
+                    } else {
+                        stylingConst!!.visibility = View.VISIBLE
+                        textArray!![4].background = getDrawable(R.drawable.highlight)
+                        textArray!![0].background = null
+                        textArray!![1].background = null
+                        textArray!![2].background = null
+                        textArray!![3].background = null
+                        itemConst!!.visibility = View.INVISIBLE
+                        currentText = textArray!![4]
+                        sizeButton!!.text = "Size: " + currentText!!.textSize
+                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    }
+
+                    true
+                } else {
+
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            x_cord = v.x - event.rawX
+                            y_cord = v.y - event.rawY
+                        }
+
+                        MotionEvent.ACTION_MOVE -> v.animate()
+                                .x(event.rawX + x_cord)
+                                .y(event.rawY + y_cord)
+                                .setDuration(0)
+                                .start()
+
+                        else -> return@OnTouchListener false
+                    }
+                    false
+                }
+            })
+
+        }
+
+        /////Move & decoration end///////////////////
+
+        //Edit text
+        editButton.setOnClickListener {
+            rotateMinus!!.visibility = View.INVISIBLE
+            seekBarRotate!!.visibility = View.INVISIBLE
+            rotatePlus!!.visibility = View.INVISIBLE
+            sizeMinus!!.visibility = View.INVISIBLE
+            seekBarSize!!.visibility = View.INVISIBLE
+            sizePlus!!.visibility = View.INVISIBLE
+            editTextMethod(currentText!!.text.toString())
+        }
+
+        //Resize text
+        sizeButton!!.setOnClickListener {
+            if (seekBarSize!!.isShown) {
+                sizeMinus!!.visibility = View.INVISIBLE
+                seekBarSize!!.visibility = View.INVISIBLE
+                sizePlus!!.visibility = View.INVISIBLE
+            } else {
+                sizeMinus!!.visibility = View.VISIBLE
+                seekBarSize!!.visibility = View.VISIBLE
+                sizePlus!!.visibility = View.VISIBLE
+                rotateMinus!!.visibility = View.INVISIBLE
+                seekBarRotate!!.visibility = View.INVISIBLE
+                rotatePlus!!.visibility = View.INVISIBLE
+                changeTextSize(currentText!!.textSize.toInt())
+            }
+        }
+
+        sizeMinus!!.setOnClickListener{
+            changeTextSize(currentText!!.textSize.toInt() - 1)
+        }
+
+        sizePlus!!.setOnClickListener{
+            changeTextSize(currentText!!.textSize.toInt() + 1)
+        }
+
+        //Rotate text
+        rotateButton!!.setOnClickListener {
+            if (seekBarRotate!!.isShown) {
+                rotateMinus!!.visibility = View.INVISIBLE
+                seekBarRotate!!.visibility = View.INVISIBLE
+                rotatePlus!!.visibility = View.INVISIBLE
+            } else {
+                sizeMinus!!.visibility = View.INVISIBLE
+                seekBarSize!!.visibility = View.INVISIBLE
+                sizePlus!!.visibility = View.INVISIBLE
+                rotateMinus!!.visibility = View.VISIBLE
+                seekBarRotate!!.visibility = View.VISIBLE
+                rotatePlus!!.visibility = View.VISIBLE
+                rotatTextView(currentText!!.rotation.toInt())
+            }
+        }
+
+        rotateMinus!!.setOnClickListener{
+            rotatTextView(currentText!!.rotation.toInt() - 1)
+        }
+
+        rotatePlus!!.setOnClickListener{
+            rotatTextView(currentText!!.rotation.toInt() + 1)
+        }
+
+        //Change color
+        colorButton.setOnClickListener {
+            seekBarRotate!!.visibility = View.INVISIBLE
+            seekBarSize!!.visibility = View.INVISIBLE
+            openColorPicker()
+        }
+
+        //Font changer
+        fontButton.setOnClickListener {
+            rotateMinus!!.visibility = View.INVISIBLE
+            seekBarRotate!!.visibility = View.INVISIBLE
+            rotatePlus!!.visibility = View.INVISIBLE
+            sizeMinus!!.visibility = View.INVISIBLE
+            seekBarSize!!.visibility = View.INVISIBLE
+            sizePlus!!.visibility = View.INVISIBLE
+            openFontChanger(currentText!!.text.toString())
+        }
+
+    }
+
+    private fun takeScreenshot(): Bitmap {
+        imageConst!!.isDrawingCacheEnabled = true
+        imageConst!!.buildDrawingCache(true)
+        val b = Bitmap.createBitmap(imageConst!!.drawingCache)
+        imageConst!!.isDrawingCacheEnabled = false
+        return b
+    }
+
+    private fun saveBitmap(bitmap: Bitmap) {
+        val path = File(Environment.getExternalStorageDirectory().toString() + "/" + "wd.jpg")
+        val fileOutputStream: FileOutputStream
+        try {
+            fileOutputStream = FileOutputStream(path)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+            fileOutputStream.flush()
+            fileOutputStream.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        Toast.makeText(this, "Saved in Gallery", Toast.LENGTH_SHORT).show()
+        val uri = Uri.fromFile(path)
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "image/png"
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "")
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "")
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+        startActivity(Intent.createChooser(shareIntent, "Share Image"))
+
+    }
+
+    private fun openColorPicker() {
+
+        val colorPicker = AmbilWarnaDialog(this, currentText!!.currentTextColor, object : AmbilWarnaDialog.OnAmbilWarnaListener {
+            override fun onCancel(dialog: AmbilWarnaDialog) {
+
+            }
+
+            override fun onOk(dialog: AmbilWarnaDialog, color: Int) {
+
+                currentText!!.setTextColor(color)
+            }
+        })
+        colorPicker.show()
+
+    }
+
+    private fun editTextMethod(text: String) {
+        val builder = AlertDialog.Builder(this)
+        val editId = 0
+        val leftButtonId = 1
+        val centerButtonId = 2
+        val rightButtonId = 3
+        val parent = 4
+
+        val editConstraint = ConstraintLayout(this)
+        val editConstParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT)
+        editConstraint.minHeight = 300
+        editConstraint.id = parent
+        editConstraint.layoutParams = editConstParams
+
+        val dEditText = EditText(this)
+        val dEditTextParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        dEditText.layoutParams = dEditTextParams
+        dEditText.id = editId
+        //dEditText.setGravity(Gravity.CENTER);
+        dEditText.setText(text)
+
+        val leftButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        val leftButton = Button(this)
+        leftButton.layoutParams = leftButtonParams
+        leftButton.background = ContextCompat.getDrawable(applicationContext, R.drawable.ic_align_left)
+        leftButton.id = leftButtonId
+
+        val centerButton = Button(this)
+        val centreButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        centerButton.layoutParams = centreButtonParams
+        centerButton.background = ContextCompat.getDrawable(applicationContext, R.drawable.ic_align_center)
+        centerButton.id = centerButtonId
+
+        val rightButton = Button(this)
+        val rightButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        rightButton.layoutParams = rightButtonParams
+        rightButton.background = ContextCompat.getDrawable(applicationContext, R.drawable.ic_align_right)
+        rightButton.id = rightButtonId
+
+
+        editConstraint.addView(dEditText)
+        editConstraint.addView(leftButton)
+        editConstraint.addView(centerButton)
+        editConstraint.addView(rightButton)
+
+        val editSet = ConstraintSet()
+        editSet.clone(editConstraint)
+
+        editSet.connect(dEditText.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        editSet.connect(dEditText.id, ConstraintSet.BOTTOM, centerButton.id, ConstraintSet.TOP)
+
+        editSet.connect(leftButton.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        editSet.connect(leftButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+        editSet.connect(centerButton.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        editSet.connect(centerButton.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        editSet.connect(centerButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+        editSet.connect(rightButton.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        editSet.connect(rightButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+        editSet.applyTo(editConstraint)
+
+        builder.setView(editConstraint)
+        builder.setPositiveButton("Submit") { _, _ ->
+            currentText!!.text = dEditText.text
+            currentText!!.gravity = dEditText.gravity
+        }.setNegativeButton("Cancel") { _, _ -> }
+
+        leftButton.setOnClickListener { dEditText.gravity = Gravity.START }
+
+        centerButton.setOnClickListener { dEditText.gravity = Gravity.CENTER }
+
+        rightButton.setOnClickListener { dEditText.gravity = Gravity.END }
+
+        builder.show()
+
+    }
+
+    private fun rotatTextView(rotation: Int) {
+        seekBarRotate!!.max = 360
+        seekBarRotate!!.progress = rotation
+
+        seekBarRotate!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currentText!!.rotation = progress.toFloat()
+                rotateButton!!.text = "Angle: $progress"
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
+    }
+
+    private fun changeTextSize(size: Int) {
+        seekBarSize!!.max = 150
+        seekBarSize!!.min = 25
+        seekBarSize!!.progress = size
+
+        seekBarSize!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currentText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress.toFloat())
+                sizeButton!!.text = "Size: $progress"
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
+
+    }
+
+    private fun createTextBuilder() {
+        if (id < 5) {
+
+            val builder = AlertDialog.Builder(this)
+            val editId = 0
+            val leftButtonId = 1
+            val centerButtonId = 2
+            val rightButtonId = 3
+            val parent = 4
+
+            val editConstraint = ConstraintLayout(this)
+            val editConstParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT)
+            editConstraint.minHeight = 300
+            editConstraint.id = parent
+            editConstraint.layoutParams = editConstParams
+
+            val dEditText = EditText(this)
+            val dEditTextParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+            dEditText.layoutParams = dEditTextParams
+            dEditText.id = editId
+            dEditText.gravity = Gravity.CENTER
+            dEditText.setText("Sample text")
+
+            val leftButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+            val leftButton = Button(this)
+            leftButton.layoutParams = leftButtonParams
+            leftButton.background = ContextCompat.getDrawable(applicationContext, R.drawable.ic_align_left)
+            leftButton.id = leftButtonId
+
+            val centerButton = Button(this)
+            val centreButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+            centerButton.layoutParams = centreButtonParams
+            centerButton.background = ContextCompat.getDrawable(applicationContext, R.drawable.ic_align_center)
+            centerButton.id = centerButtonId
+
+            val rightButton = Button(this)
+            val rightButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+            rightButton.layoutParams = rightButtonParams
+            rightButton.background = ContextCompat.getDrawable(applicationContext, R.drawable.ic_align_right)
+            rightButton.id = rightButtonId
+
+
+            editConstraint.addView(dEditText)
+            editConstraint.addView(leftButton)
+            editConstraint.addView(centerButton)
+            editConstraint.addView(rightButton)
+
+            val editSet = ConstraintSet()
+            editSet.clone(editConstraint)
+
+            editSet.connect(dEditText.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            editSet.connect(dEditText.id, ConstraintSet.BOTTOM, centerButton.id, ConstraintSet.TOP)
+
+            editSet.connect(leftButton.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            editSet.connect(leftButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+            editSet.connect(centerButton.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            editSet.connect(centerButton.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            editSet.connect(centerButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+            editSet.connect(rightButton.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            editSet.connect(rightButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+            editSet.applyTo(editConstraint)
+
+            builder.setView(editConstraint)
+            builder.setPositiveButton("Submit") { _, _ -> createText(dEditText.text.toString(), dEditText.gravity) }.setNegativeButton("Cancel") { _, _ -> }
+
+            leftButton.setOnClickListener { dEditText.gravity = Gravity.START }
+
+            centerButton.setOnClickListener { dEditText.gravity = Gravity.CENTER }
+
+            rightButton.setOnClickListener { dEditText.gravity = Gravity.END }
+
+            builder.show()
+
+        } else {
+            Toast.makeText(this, "Maximum 5 Texts you can use", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun createText(text: String, gravity: Int?) {
+
+        val set = ConstraintSet()
+        set.clone(imageConst!!)
+        //New textview
+        textArray!![id].text = text
+        textArray!![id].id = id
+        textArray!![id].isClickable = true
+        textArray!![id].setPadding(8, 8, 8, 8)
+        textArray!![id].gravity = gravity!!
+        textArray!![id].setTextColor(Color.parseColor("#FF000000"))
+        imageConst!!.addView(textArray!![id])
+        set.connect(textArray!![id].id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0)
+        set.connect(textArray!![id].id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+        set.connect(textArray!![id].id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0)
+        set.connect(textArray!![id].id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0)
+        set.constrainHeight(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
+        set.constrainWidth(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
+        set.applyTo(imageConst!!)
+        id = id + 1
+    }
+
+    fun openGallery() {
+        CropImage.startPickImageActivity(this)
+    }
+
+    @SuppressLint("NewApi")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val imageUri = CropImage.getPickImageResultUri(this, data)
+            startCropImageActivity(imageUri)
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            val imageUri = CropImage.getActivityResult(data)
+            if (data != null){
+                imageView!!.setImageURI(imageUri.uri)
+                recyclerView!!.visibility = View.INVISIBLE
+                itemConst!!.visibility = View.VISIBLE
+            }else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
+                Toast.makeText(this, "Cropping failed" + imageUri.error, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+
+    private fun startCropImageActivity(image: Uri) {
+        CropImage.activity(image)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1, 1)
+                .setMultiTouchEnabled(true)
+                .start(this)
+    }
+
+    fun selectImage(i: Int) {
+        recyclerView!!.visibility = View.INVISIBLE
+        itemConst!!.visibility = View.VISIBLE
+        imageView!!.setImageDrawable(imageList!![i])
+    }
+
+    private fun loadImages() {
+
+        val linearLayoutManager = LinearLayoutManager(applicationContext)
+        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        linearLayoutManager.stackFromEnd = false
+        recyclerView!!.layoutManager = linearLayoutManager
+
+        val imageAdapter = ImageAdapter(this, imageList)
+        recyclerView!!.adapter = imageAdapter
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    private fun makeImageList() {
+        imageList = ArrayList()
+        val assetManager = assets
+        var inputStream: InputStream?
+
+        for (i in 1..6) {
+
+            try {
+                inputStream = assetManager.open("images/image$i.png")
+                imageList!!.add(Drawable.createFromStream(inputStream, ""))
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+    /////////////////////////////////////////////////////
+
+    private fun makeFontList() {
+        fontList = ArrayList()
+        fontNamesList = ArrayList()
+        val assetManager = this.assets
+
+        try {
+            val files = assetManager.list("fonts")
+            fontNamesList = LinkedList(Arrays.asList(*files))
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        for (i in fontNamesList!!.indices) {
+            fontList!!.add(Typeface.createFromAsset(assets, "fonts/" + fontNamesList!![i]))
+
+        }
+    }
+
+    private fun openFontChanger(text: String) {
+
+        val builder = AlertDialog.Builder(this)
+
+
+        val fontConst = ConstraintLayout(this)
+        val fontConstParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        fontConst.layoutParams = fontConstParams
+        fontConst.id = 0
+
+        fontTextView = TextView(this)
+        val fontTextViewParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        fontTextView!!.layoutParams = fontTextViewParams
+        fontTextView!!.id = 0
+        fontTextView!!.maxLines = 1
+        fontTextView!!.text = text
+        fontTextView!!.gravity = Gravity.CENTER
+        fontTextView!!.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorWhite))
+        fontTextView!!.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorAccent))
+        fontTextView!!.textSize = 48f
+
+        val fontRecycler = RecyclerView(this)
+        val fontRecyclerParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        fontRecycler.layoutParams = fontRecyclerParams
+        fontRecycler.id = 0
+
+        fontConst.addView(fontTextView)
+        fontConst.addView(fontRecycler)
+
+        val fontSet = ConstraintSet()
+        fontSet.clone(fontConst)
+        fontSet.connect(fontTextView!!.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+
+        fontSet.connect(fontRecycler.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        fontSet.connect(fontRecycler.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        fontSet.connect(fontRecycler.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+        fontSet.applyTo(fontConst)
+
+        val linearLayoutManager = LinearLayoutManager(applicationContext)
+        linearLayoutManager.orientation = RecyclerView.VERTICAL
+        fontRecycler.layoutManager = linearLayoutManager
+
+        val fontAdapter = FontAdapter(this, fontList, fontNamesList)
+        fontRecycler.adapter = fontAdapter
+
+        builder.setView(fontConst)
+        builder.setPositiveButton("Submit") { _, _ -> currentText!!.typeface = fontList!![position] }.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+
+        builder.show()
+    }
+
+    fun updateBroadCast(i: Int) {
+        ////Broadcaster
+        val mReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                position = intent.getIntExtra("position", 0)
+            }
+        }
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, IntentFilter("intent"))
+        //////////////////till here//////////
+        fontTextView!!.typeface = fontList!![i]
+    }
+
+
+    private fun donateDev() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Want to Donate?")
+                .setMessage("Buy a coffee for me,\n" + "It shows me your love and helps to keep development active and keep it ad free")
+                .setPositiveButton("Donate") { _, _ ->
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://paypal.me/encrustace?locale.x=en_GB"))
+                    startActivity(browserIntent)
+                }.setNegativeButton("Later") { dialog, _ -> dialog.dismiss() }
+        builder.show()
+    }
+
+    private fun askPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        arrayOf1(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        1)
+            }
+
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array1<String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Permission Granted
+                } else {
+                    //Not  granted
+                }
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes") { _, _ -> super@Home.onBackPressed() }
+                .show()
+    }
+
+    companion object {
+        internal val GALLERY_PICK = 1
+    }
+}
