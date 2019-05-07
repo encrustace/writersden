@@ -3,10 +3,7 @@ package `in`.encrust.writersden
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -16,7 +13,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
-import android.util.Log
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.Gravity
@@ -37,6 +33,11 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import yuku.ambilwarna.AmbilWarnaDialog
 import java.io.*
 import java.util.*
+import kotlin.Boolean
+import kotlin.Float
+import kotlin.Int
+import kotlin.IntArray
+import kotlin.String
 import kotlin.collections.ArrayList
 import kotlin.Array as Array1
 import kotlin.arrayOf as arrayOf1
@@ -74,7 +75,6 @@ class Home : AppCompatActivity() {
         imageConst = findViewById(R.id.home_imageconst)
         imageView = findViewById(R.id.home_image)
         itemConst = findViewById(R.id.home_itemconst)
-        val donateButton = findViewById<Button>(R.id.home_donate)
         val shareButton = findViewById<Button>(R.id.home_share)
         val imageButton = findViewById<ImageButton>(R.id.home_imagebutton)
         val textButton = findViewById<ImageButton>(R.id.home_textbutton)
@@ -83,7 +83,7 @@ class Home : AppCompatActivity() {
         val colorButton = findViewById<Button>(R.id.home_textcolor)
         sizeButton = findViewById(R.id.home_textsize)
         val fontButton = findViewById<Button>(R.id.home_textfont)
-        findViewById<Button>(R.id.home_textremove)
+        val shadowButton = findViewById<Button>(R.id.home_textshadow)
         val editButton = findViewById<Button>(R.id.home_edittext)
         rotateButton = findViewById(R.id.home_textrotate)
         sizeMinus = findViewById(R.id.seekbarsize_left)
@@ -126,8 +126,6 @@ class Home : AppCompatActivity() {
 
         textButton.setOnClickListener { createTextBuilder() }
 
-        donateButton.setOnClickListener { donateDev() }
-
         imageButton.setOnClickListener {
             recyclerView!!.visibility = View.VISIBLE
             itemConst!!.visibility = View.INVISIBLE
@@ -149,6 +147,14 @@ class Home : AppCompatActivity() {
             rotateMinus!!.visibility = View.INVISIBLE
             seekBarRotate!!.visibility = View.INVISIBLE
             rotatePlus!!.visibility = View.INVISIBLE
+        }
+
+        shadowButton!!.setOnClickListener {
+            if (currentText!!.shadowDx == 5F) {
+                currentText!!.setShadowLayer(0.toFloat(), 0.toFloat(), 0.toFloat(), Color.parseColor("#FF000000"))
+            } else {
+                currentText!!.setShadowLayer(5.toFloat(), 5.toFloat(), 5.toFloat(), Color.parseColor("#FF000000"))
+            }
         }
 
 
@@ -392,7 +398,7 @@ class Home : AppCompatActivity() {
             sizeMinus!!.visibility = View.INVISIBLE
             seekBarSize!!.visibility = View.INVISIBLE
             sizePlus!!.visibility = View.INVISIBLE
-            editTextMethod(currentText!!.text.toString())
+            editTextMethod(currentText!!.text.toString(), currentText!!.gravity)
         }
 
         //Resize text
@@ -412,11 +418,11 @@ class Home : AppCompatActivity() {
             }
         }
 
-        sizeMinus!!.setOnClickListener{
+        sizeMinus!!.setOnClickListener {
             changeTextSize(currentText!!.textSize.toInt() - 1)
         }
 
-        sizePlus!!.setOnClickListener{
+        sizePlus!!.setOnClickListener {
             changeTextSize(currentText!!.textSize.toInt() + 1)
         }
 
@@ -437,11 +443,11 @@ class Home : AppCompatActivity() {
             }
         }
 
-        rotateMinus!!.setOnClickListener{
+        rotateMinus!!.setOnClickListener {
             rotatTextView(currentText!!.rotation.toInt() - 1)
         }
 
-        rotatePlus!!.setOnClickListener{
+        rotatePlus!!.setOnClickListener {
             rotatTextView(currentText!!.rotation.toInt() + 1)
         }
 
@@ -514,7 +520,7 @@ class Home : AppCompatActivity() {
 
     }
 
-    private fun editTextMethod(text: String) {
+    private fun editTextMethod(text: String, gravity: Int) {
         val builder = AlertDialog.Builder(this)
         val editId = 0
         val leftButtonId = 1
@@ -532,7 +538,7 @@ class Home : AppCompatActivity() {
         val dEditTextParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         dEditText.layoutParams = dEditTextParams
         dEditText.id = editId
-        //dEditText.setGravity(Gravity.CENTER);
+        dEditText.gravity = gravity;
         dEditText.setText(text)
 
         val leftButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
@@ -598,6 +604,7 @@ class Home : AppCompatActivity() {
         seekBarRotate!!.progress = rotation
 
         seekBarRotate!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currentText!!.rotation = progress.toFloat()
                 rotateButton!!.text = "Angle: $progress"
@@ -615,11 +622,11 @@ class Home : AppCompatActivity() {
     }
 
     private fun changeTextSize(size: Int) {
-        seekBarSize!!.max = 150
-        seekBarSize!!.min = 25
+        seekBarSize!!.max = 500
         seekBarSize!!.progress = size
 
         seekBarSize!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currentText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress.toFloat())
                 sizeButton!!.text = "Size: $progress"
@@ -637,6 +644,7 @@ class Home : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun createTextBuilder() {
         if (id < 5) {
 
@@ -658,7 +666,7 @@ class Home : AppCompatActivity() {
             dEditText.layoutParams = dEditTextParams
             dEditText.id = editId
             dEditText.gravity = Gravity.CENTER
-            dEditText.setText("Sample text")
+            dEditText.hint = "Type here"
 
             val leftButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
             val leftButton = Button(this)
@@ -703,7 +711,18 @@ class Home : AppCompatActivity() {
             editSet.applyTo(editConstraint)
 
             builder.setView(editConstraint)
-            builder.setPositiveButton("Submit") { _, _ -> createText(dEditText.text.toString(), dEditText.gravity) }.setNegativeButton("Cancel") { _, _ -> }
+            builder.setCancelable(false)
+
+            builder.setPositiveButton("Submit") { _, _ ->
+                if(dEditText.text.toString() == ""){
+                    Toast.makeText(this, "Type something", Toast.LENGTH_LONG).show()
+                    return@setPositiveButton
+                }else{
+                    createText(dEditText.text.toString(), dEditText.gravity)
+                }
+            }
+
+            builder.setNegativeButton("Cancel") { _, _ -> }
 
             leftButton.setOnClickListener { dEditText.gravity = Gravity.START }
 
@@ -738,7 +757,7 @@ class Home : AppCompatActivity() {
         set.constrainHeight(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
         set.constrainWidth(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
         set.applyTo(imageConst!!)
-        id = id + 1
+        id += 1
     }
 
     fun openGallery() {
@@ -752,13 +771,13 @@ class Home : AppCompatActivity() {
             startCropImageActivity(imageUri)
         }
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val imageUri = CropImage.getActivityResult(data)
-            if (data != null){
+            if (data != null) {
                 imageView!!.setImageURI(imageUri.uri)
                 recyclerView!!.visibility = View.INVISIBLE
                 itemConst!!.visibility = View.VISIBLE
-            }else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed" + imageUri.error, Toast.LENGTH_LONG).show()
             }
         }
@@ -832,35 +851,38 @@ class Home : AppCompatActivity() {
     private fun openFontChanger(text: String) {
 
         val builder = AlertDialog.Builder(this)
-
+        val id1 = 0
+        val id2 = 1
+        val id3 = 2
 
         val fontConst = ConstraintLayout(this)
         val fontConstParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         fontConst.layoutParams = fontConstParams
-        fontConst.id = 0
+        fontConst.id = id1
 
         fontTextView = TextView(this)
         val fontTextViewParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         fontTextView!!.layoutParams = fontTextViewParams
-        fontTextView!!.id = 0
+        fontTextView!!.id = id2
         fontTextView!!.maxLines = 1
         fontTextView!!.text = text
         fontTextView!!.gravity = Gravity.CENTER
         fontTextView!!.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorWhite))
         fontTextView!!.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.colorAccent))
-        fontTextView!!.textSize = 48f
+        fontTextView!!.textSize = 40f
 
         val fontRecycler = RecyclerView(this)
         val fontRecyclerParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         fontRecycler.layoutParams = fontRecyclerParams
-        fontRecycler.id = 0
+        fontRecycler.id = id3
 
-        fontConst.addView(fontTextView)
         fontConst.addView(fontRecycler)
+        fontConst.addView(fontTextView)
 
         val fontSet = ConstraintSet()
         fontSet.clone(fontConst)
-        fontSet.connect(fontTextView!!.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        fontSet.connect(fontTextView!!.id, ConstraintSet.TOP, fontConst.id, ConstraintSet.TOP)
+        fontSet.connect(fontTextView!!.id, ConstraintSet.BOTTOM, fontConst.id, ConstraintSet.BOTTOM)
 
         fontSet.connect(fontRecycler.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
         fontSet.connect(fontRecycler.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
@@ -891,18 +913,6 @@ class Home : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, IntentFilter("intent"))
         //////////////////till here//////////
         fontTextView!!.typeface = fontList!![i]
-    }
-
-
-    private fun donateDev() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Want to Donate?")
-                .setMessage("Buy a coffee for me,\n" + "It shows me your love and helps to keep development active and keep it ad free")
-                .setPositiveButton("Donate") { _, _ ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://paypal.me/encrustace?locale.x=en_GB"))
-                    startActivity(browserIntent)
-                }.setNegativeButton("Later") { dialog, _ -> dialog.dismiss() }
-        builder.show()
     }
 
     private fun askPermissions() {
@@ -939,9 +949,5 @@ class Home : AppCompatActivity() {
                 .setNegativeButton("No", null)
                 .setPositiveButton("Yes") { _, _ -> super@Home.onBackPressed() }
                 .show()
-    }
-
-    companion object {
-        internal val GALLERY_PICK = 1
     }
 }
