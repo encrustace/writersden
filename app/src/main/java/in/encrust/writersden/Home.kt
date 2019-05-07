@@ -3,7 +3,10 @@ package `in`.encrust.writersden
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -160,233 +163,212 @@ class Home : AppCompatActivity() {
 
         /////Move & decoration///////////////////
 
-        if (textArray!![0] != null) {
+        textArray!![0].setOnTouchListener(View.OnTouchListener { v, event ->
+            if (gestureDetector!!.onTouchEvent(event)) {
 
-            textArray!![0].setOnTouchListener(View.OnTouchListener { v, event ->
-                if (gestureDetector!!.onTouchEvent(event)) {
-
-                    if (stylingConst!!.isShown) {
-                        stylingConst!!.visibility = View.INVISIBLE
-                        textArray!![0].background = null
-                        itemConst!!.visibility = View.VISIBLE
-                    } else {
-                        stylingConst!!.visibility = View.VISIBLE
-                        textArray!![0].background = getDrawable(R.drawable.highlight)
-                        textArray!![1].background = null
-                        textArray!![2].background = null
-                        textArray!![3].background = null
-                        textArray!![4].background = null
-                        itemConst!!.visibility = View.INVISIBLE
-                        currentText = textArray!![0]
-                        sizeButton!!.text = "Size: " + currentText!!.textSize
-                        rotateButton!!.text = "Angle: " + currentText!!.rotation
-                    }
-
-                    true
+                if (stylingConst!!.isShown) {
+                    stylingConst!!.visibility = View.INVISIBLE
+                    textArray!![0].background = null
+                    itemConst!!.visibility = View.VISIBLE
                 } else {
-
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            x_cord = v.x - event.rawX
-                            y_cord = v.y - event.rawY
-                        }
-
-                        MotionEvent.ACTION_MOVE -> v.animate()
-                                .x(event.rawX + x_cord)
-                                .y(event.rawY + y_cord)
-                                .setDuration(0)
-                                .start()
-
-                        else -> return@OnTouchListener false
-                    }
-                    false
+                    stylingConst!!.visibility = View.VISIBLE
+                    textArray!![0].background = getDrawable(R.drawable.highlight)
+                    textArray!![1].background = null
+                    textArray!![2].background = null
+                    textArray!![3].background = null
+                    textArray!![4].background = null
+                    itemConst!!.visibility = View.INVISIBLE
+                    currentText = textArray!![0]
+                    sizeButton!!.text = "Size: " + currentText!!.textSize
+                    rotateButton!!.text = "Angle: " + currentText!!.rotation
                 }
-            })
 
-        }
+                true
+            } else {
 
-        if (textArray!![1] != null) {
-
-            textArray!![1].setOnTouchListener(View.OnTouchListener { v, event ->
-                if (gestureDetector!!.onTouchEvent(event)) {
-
-                    if (stylingConst!!.isShown) {
-                        stylingConst!!.visibility = View.INVISIBLE
-                        textArray!![1].background = null
-                        itemConst!!.visibility = View.VISIBLE
-                    } else {
-                        stylingConst!!.visibility = View.VISIBLE
-                        textArray!![1].background = getDrawable(R.drawable.highlight)
-                        textArray!![0].background = null
-                        textArray!![2].background = null
-                        textArray!![3].background = null
-                        textArray!![4].background = null
-                        itemConst!!.visibility = View.INVISIBLE
-                        currentText = textArray!![1]
-                        sizeButton!!.text = "Size: " + currentText!!.textSize
-                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        x_cord = v.x - event.rawX
+                        y_cord = v.y - event.rawY
                     }
 
-                    true
+                    MotionEvent.ACTION_MOVE -> v.animate()
+                            .x(event.rawX + x_cord)
+                            .y(event.rawY + y_cord)
+                            .setDuration(0)
+                            .start()
+
+                    else -> return@OnTouchListener false
+                }
+                false
+            }
+        })
+
+        textArray!![1].setOnTouchListener(View.OnTouchListener { v, event ->
+            if (gestureDetector!!.onTouchEvent(event)) {
+
+                if (stylingConst!!.isShown) {
+                    stylingConst!!.visibility = View.INVISIBLE
+                    textArray!![1].background = null
+                    itemConst!!.visibility = View.VISIBLE
                 } else {
-
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            x_cord = v.x - event.rawX
-                            y_cord = v.y - event.rawY
-                        }
-
-                        MotionEvent.ACTION_MOVE -> v.animate()
-                                .x(event.rawX + x_cord)
-                                .y(event.rawY + y_cord)
-                                .setDuration(0)
-                                .start()
-
-                        else -> return@OnTouchListener false
-                    }
-                    false
+                    stylingConst!!.visibility = View.VISIBLE
+                    textArray!![1].background = getDrawable(R.drawable.highlight)
+                    textArray!![0].background = null
+                    textArray!![2].background = null
+                    textArray!![3].background = null
+                    textArray!![4].background = null
+                    itemConst!!.visibility = View.INVISIBLE
+                    currentText = textArray!![1]
+                    sizeButton!!.text = "Size: " + currentText!!.textSize
+                    rotateButton!!.text = "Angle: " + currentText!!.rotation
                 }
-            })
 
-        }
+                true
+            } else {
 
-
-        if (textArray!![2] != null) {
-
-            textArray!![2].setOnTouchListener(View.OnTouchListener { v, event ->
-                if (gestureDetector!!.onTouchEvent(event)) {
-
-                    if (stylingConst!!.isShown) {
-                        stylingConst!!.visibility = View.INVISIBLE
-                        textArray!![2].background = null
-                        itemConst!!.visibility = View.VISIBLE
-                    } else {
-                        stylingConst!!.visibility = View.VISIBLE
-                        textArray!![2].background = getDrawable(R.drawable.highlight)
-                        textArray!![0].background = null
-                        textArray!![1].background = null
-                        textArray!![3].background = null
-                        textArray!![4].background = null
-                        itemConst!!.visibility = View.INVISIBLE
-                        currentText = textArray!![2]
-                        sizeButton!!.text = "Size: " + currentText!!.textSize
-                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        x_cord = v.x - event.rawX
+                        y_cord = v.y - event.rawY
                     }
 
-                    true
+                    MotionEvent.ACTION_MOVE -> v.animate()
+                            .x(event.rawX + x_cord)
+                            .y(event.rawY + y_cord)
+                            .setDuration(0)
+                            .start()
+
+                    else -> return@OnTouchListener false
+                }
+                false
+            }
+        })
+
+
+        textArray!![2].setOnTouchListener(View.OnTouchListener { v, event ->
+            if (gestureDetector!!.onTouchEvent(event)) {
+
+                if (stylingConst!!.isShown) {
+                    stylingConst!!.visibility = View.INVISIBLE
+                    textArray!![2].background = null
+                    itemConst!!.visibility = View.VISIBLE
                 } else {
-
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            x_cord = v.x - event.rawX
-                            y_cord = v.y - event.rawY
-                        }
-
-                        MotionEvent.ACTION_MOVE -> v.animate()
-                                .x(event.rawX + x_cord)
-                                .y(event.rawY + y_cord)
-                                .setDuration(0)
-                                .start()
-
-                        else -> return@OnTouchListener false
-                    }
-                    false
+                    stylingConst!!.visibility = View.VISIBLE
+                    textArray!![2].background = getDrawable(R.drawable.highlight)
+                    textArray!![0].background = null
+                    textArray!![1].background = null
+                    textArray!![3].background = null
+                    textArray!![4].background = null
+                    itemConst!!.visibility = View.INVISIBLE
+                    currentText = textArray!![2]
+                    sizeButton!!.text = "Size: " + currentText!!.textSize
+                    rotateButton!!.text = "Angle: " + currentText!!.rotation
                 }
-            })
 
-        }
+                true
+            } else {
 
-
-        if (textArray!![3] != null) {
-
-
-            textArray!![3].setOnTouchListener(View.OnTouchListener { v, event ->
-                if (gestureDetector!!.onTouchEvent(event)) {
-
-                    if (stylingConst!!.isShown) {
-                        stylingConst!!.visibility = View.INVISIBLE
-                        textArray!![3].background = null
-                        itemConst!!.visibility = View.VISIBLE
-                    } else {
-                        stylingConst!!.visibility = View.VISIBLE
-                        textArray!![3].background = getDrawable(R.drawable.highlight)
-                        textArray!![0].background = null
-                        textArray!![1].background = null
-                        textArray!![2].background = null
-                        textArray!![4].background = null
-                        itemConst!!.visibility = View.INVISIBLE
-                        currentText = textArray!![3]
-                        sizeButton!!.text = "Size: " + currentText!!.textSize
-                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        x_cord = v.x - event.rawX
+                        y_cord = v.y - event.rawY
                     }
 
-                    true
+                    MotionEvent.ACTION_MOVE -> v.animate()
+                            .x(event.rawX + x_cord)
+                            .y(event.rawY + y_cord)
+                            .setDuration(0)
+                            .start()
+
+                    else -> return@OnTouchListener false
+                }
+                false
+            }
+        })
+
+
+        textArray!![3].setOnTouchListener(View.OnTouchListener { v, event ->
+            if (gestureDetector!!.onTouchEvent(event)) {
+
+                if (stylingConst!!.isShown) {
+                    stylingConst!!.visibility = View.INVISIBLE
+                    textArray!![3].background = null
+                    itemConst!!.visibility = View.VISIBLE
                 } else {
-
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            x_cord = v.x - event.rawX
-                            y_cord = v.y - event.rawY
-                        }
-
-                        MotionEvent.ACTION_MOVE -> v.animate()
-                                .x(event.rawX + x_cord)
-                                .y(event.rawY + y_cord)
-                                .setDuration(0)
-                                .start()
-
-                        else -> return@OnTouchListener false
-                    }
-                    false
+                    stylingConst!!.visibility = View.VISIBLE
+                    textArray!![3].background = getDrawable(R.drawable.highlight)
+                    textArray!![0].background = null
+                    textArray!![1].background = null
+                    textArray!![2].background = null
+                    textArray!![4].background = null
+                    itemConst!!.visibility = View.INVISIBLE
+                    currentText = textArray!![3]
+                    sizeButton!!.text = "Size: " + currentText!!.textSize
+                    rotateButton!!.text = "Angle: " + currentText!!.rotation
                 }
-            })
 
-        }
+                true
+            } else {
 
-        if (textArray!![4] != null) {
-
-            textArray!![4].setOnTouchListener(View.OnTouchListener { v, event ->
-                if (gestureDetector!!.onTouchEvent(event)) {
-
-                    if (stylingConst!!.isShown) {
-                        stylingConst!!.visibility = View.INVISIBLE
-                        textArray!![4].background = null
-                        itemConst!!.visibility = View.VISIBLE
-                    } else {
-                        stylingConst!!.visibility = View.VISIBLE
-                        textArray!![4].background = getDrawable(R.drawable.highlight)
-                        textArray!![0].background = null
-                        textArray!![1].background = null
-                        textArray!![2].background = null
-                        textArray!![3].background = null
-                        itemConst!!.visibility = View.INVISIBLE
-                        currentText = textArray!![4]
-                        sizeButton!!.text = "Size: " + currentText!!.textSize
-                        rotateButton!!.text = "Angle: " + currentText!!.rotation
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        x_cord = v.x - event.rawX
+                        y_cord = v.y - event.rawY
                     }
 
-                    true
+                    MotionEvent.ACTION_MOVE -> v.animate()
+                            .x(event.rawX + x_cord)
+                            .y(event.rawY + y_cord)
+                            .setDuration(0)
+                            .start()
+
+                    else -> return@OnTouchListener false
+                }
+                false
+            }
+        })
+
+        textArray!![4].setOnTouchListener(View.OnTouchListener { v, event ->
+            if (gestureDetector!!.onTouchEvent(event)) {
+
+                if (stylingConst!!.isShown) {
+                    stylingConst!!.visibility = View.INVISIBLE
+                    textArray!![4].background = null
+                    itemConst!!.visibility = View.VISIBLE
                 } else {
-
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            x_cord = v.x - event.rawX
-                            y_cord = v.y - event.rawY
-                        }
-
-                        MotionEvent.ACTION_MOVE -> v.animate()
-                                .x(event.rawX + x_cord)
-                                .y(event.rawY + y_cord)
-                                .setDuration(0)
-                                .start()
-
-                        else -> return@OnTouchListener false
-                    }
-                    false
+                    stylingConst!!.visibility = View.VISIBLE
+                    textArray!![4].background = getDrawable(R.drawable.highlight)
+                    textArray!![0].background = null
+                    textArray!![1].background = null
+                    textArray!![2].background = null
+                    textArray!![3].background = null
+                    itemConst!!.visibility = View.INVISIBLE
+                    currentText = textArray!![4]
+                    sizeButton!!.text = "Size: " + currentText!!.textSize
+                    rotateButton!!.text = "Angle: " + currentText!!.rotation
                 }
-            })
 
-        }
+                true
+            } else {
+
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        x_cord = v.x - event.rawX
+                        y_cord = v.y - event.rawY
+                    }
+
+                    MotionEvent.ACTION_MOVE -> v.animate()
+                            .x(event.rawX + x_cord)
+                            .y(event.rawY + y_cord)
+                            .setDuration(0)
+                            .start()
+
+                    else -> return@OnTouchListener false
+                }
+                false
+            }
+        })
 
         /////Move & decoration end///////////////////
 
@@ -538,7 +520,7 @@ class Home : AppCompatActivity() {
         val dEditTextParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         dEditText.layoutParams = dEditTextParams
         dEditText.id = editId
-        dEditText.gravity = gravity;
+        dEditText.gravity = gravity
         dEditText.setText(text)
 
         val leftButtonParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
@@ -820,7 +802,7 @@ class Home : AppCompatActivity() {
         for (i in 1..6) {
 
             try {
-                inputStream = assetManager.open("images/image$i.png")
+                inputStream = assetManager.open("images/image$i.jpg")
                 imageList!!.add(Drawable.createFromStream(inputStream, ""))
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -933,7 +915,7 @@ class Home : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array1<String>, grantResults: IntArray) {
         when (requestCode) {
             1 -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Permission Granted
                 } else {
                     //Not  granted
