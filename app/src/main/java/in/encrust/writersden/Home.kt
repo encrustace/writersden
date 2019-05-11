@@ -31,6 +31,8 @@ import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import yuku.ambilwarna.AmbilWarnaDialog
@@ -46,6 +48,7 @@ import kotlin.Array as Array1
 import kotlin.arrayOf as arrayOf1
 
 class Home : AppCompatActivity() {
+    private var adView: AdView? = null
     private var imageList: ArrayList<Drawable>? = null
     private var fontList: ArrayList<Typeface>? = null
     private var fontNamesList: List<String>? = null
@@ -57,14 +60,18 @@ class Home : AppCompatActivity() {
     private var x_cord: Float = 0.toFloat()
     private var y_cord: Float = 0.toFloat()
     private var imageView: ImageView? = null
-    private var sizeButton: Button? = null
-    private var rotateButton: Button? = null
     private var sizeMinus: Button? = null
     private var seekBarSize: SeekBar? = null
     private var sizePlus: Button? = null
     private var rotateMinus: Button? = null
     private var seekBarRotate: SeekBar? = null
     private var rotatePlus: Button? = null
+    private var spaceMinus: Button? = null
+    private var seekBarSpace: SeekBar? = null
+    private var spacePlus: Button? = null
+    private var shadowMinus: Button? = null
+    private var seekBarShadow: SeekBar? = null
+    private var shadowPlus: Button? = null
     private var id = 0
     private var textArray: ArrayList<TextView>? = null
     private var currentText: TextView? = null
@@ -75,26 +82,31 @@ class Home : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
+        adView = findViewById(R.id.adView)
         imageConst = findViewById(R.id.home_imageconst)
         imageView = findViewById(R.id.home_image)
         itemConst = findViewById(R.id.home_itemconst)
         val shareButton = findViewById<Button>(R.id.home_share)
-        val imageButton = findViewById<ImageButton>(R.id.home_imagebutton)
-        val textButton = findViewById<ImageButton>(R.id.home_textbutton)
+        val imageButton = findViewById<Button>(R.id.home_imagebutton)
+        val textButton = findViewById<Button>(R.id.home_textbutton)
         recyclerView = findViewById(R.id.home_recycler)
         stylingConst = findViewById(R.id.home_stylingconst)
         val colorButton = findViewById<Button>(R.id.home_textcolor)
-        sizeButton = findViewById(R.id.home_textsize)
         val fontButton = findViewById<Button>(R.id.home_textfont)
-        val shadowButton = findViewById<Button>(R.id.home_textshadow)
+        val artButton = findViewById<Button>(R.id.home_arts)
         val editButton = findViewById<Button>(R.id.home_edittext)
-        rotateButton = findViewById(R.id.home_textrotate)
         sizeMinus = findViewById(R.id.seekbarsize_left)
         seekBarSize = findViewById(R.id.home_seekbarsize)
         sizePlus = findViewById(R.id.seekbarsize_right)
         rotateMinus = findViewById(R.id.seekbarrotate_left)
         seekBarRotate = findViewById(R.id.home_seekbarrotate)
         rotatePlus = findViewById(R.id.seekbarrotate_right)
+        spaceMinus = findViewById(R.id.seekbargap_left)
+        seekBarSpace = findViewById(R.id.home_seekbargap)
+        spacePlus = findViewById(R.id.seekbargap_right)
+        shadowMinus = findViewById(R.id.seekbarshadow_left)
+        seekBarShadow = findViewById(R.id.home_seekbarshadow)
+        shadowPlus = findViewById(R.id.seekbarshadow_right)
         gestureDetector = GestureDetector(this, SingleTapConfirm())
 
 
@@ -108,12 +120,6 @@ class Home : AppCompatActivity() {
         makeImageList()
         makeFontList()
         stylingConst!!.visibility = View.INVISIBLE
-        sizeMinus!!.visibility = View.INVISIBLE
-        seekBarSize!!.visibility = View.INVISIBLE
-        sizePlus!!.visibility = View.INVISIBLE
-        rotateMinus!!.visibility = View.INVISIBLE
-        seekBarRotate!!.visibility = View.INVISIBLE
-        rotatePlus!!.visibility = View.INVISIBLE
 
         selectImage(1)
 
@@ -126,6 +132,9 @@ class Home : AppCompatActivity() {
             saveBitmap(bitmap)
             //save
         }
+
+        val adRequest = AdRequest.Builder().build()
+        adView!!.loadAd(adRequest)
 
         textButton.setOnClickListener { createTextBuilder() }
 
@@ -144,20 +153,6 @@ class Home : AppCompatActivity() {
             stylingConst!!.visibility = View.INVISIBLE
             itemConst!!.visibility = View.VISIBLE
             recyclerView!!.visibility = View.INVISIBLE
-            sizeMinus!!.visibility = View.INVISIBLE
-            seekBarSize!!.visibility = View.INVISIBLE
-            sizePlus!!.visibility = View.INVISIBLE
-            rotateMinus!!.visibility = View.INVISIBLE
-            seekBarRotate!!.visibility = View.INVISIBLE
-            rotatePlus!!.visibility = View.INVISIBLE
-        }
-
-        shadowButton!!.setOnClickListener {
-            if (currentText!!.shadowDx == 5F) {
-                currentText!!.setShadowLayer(0.toFloat(), 0.toFloat(), 0.toFloat(), Color.parseColor("#FF000000"))
-            } else {
-                currentText!!.setShadowLayer(5.toFloat(), 5.toFloat(), 5.toFloat(), Color.parseColor("#FF000000"))
-            }
         }
 
 
@@ -179,8 +174,10 @@ class Home : AppCompatActivity() {
                     textArray!![4].background = null
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![0]
-                    sizeButton!!.text = "Size: " + currentText!!.textSize
-                    rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
                 }
 
                 true
@@ -220,8 +217,10 @@ class Home : AppCompatActivity() {
                     textArray!![4].background = null
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![1]
-                    sizeButton!!.text = "Size: " + currentText!!.textSize
-                    rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
                 }
 
                 true
@@ -262,8 +261,10 @@ class Home : AppCompatActivity() {
                     textArray!![4].background = null
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![2]
-                    sizeButton!!.text = "Size: " + currentText!!.textSize
-                    rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
                 }
 
                 true
@@ -304,8 +305,10 @@ class Home : AppCompatActivity() {
                     textArray!![4].background = null
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![3]
-                    sizeButton!!.text = "Size: " + currentText!!.textSize
-                    rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
                 }
 
                 true
@@ -345,8 +348,10 @@ class Home : AppCompatActivity() {
                     textArray!![3].background = null
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![4]
-                    sizeButton!!.text = "Size: " + currentText!!.textSize
-                    rotateButton!!.text = "Angle: " + currentText!!.rotation
+                    seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
                 }
 
                 true
@@ -383,71 +388,112 @@ class Home : AppCompatActivity() {
             editTextMethod(currentText!!.text.toString(), currentText!!.gravity)
         }
 
-        //Resize text
-        sizeButton!!.setOnClickListener {
-            if (seekBarSize!!.isShown) {
-                sizeMinus!!.visibility = View.INVISIBLE
-                seekBarSize!!.visibility = View.INVISIBLE
-                sizePlus!!.visibility = View.INVISIBLE
-            } else {
-                sizeMinus!!.visibility = View.VISIBLE
-                seekBarSize!!.visibility = View.VISIBLE
-                sizePlus!!.visibility = View.VISIBLE
-                rotateMinus!!.visibility = View.INVISIBLE
-                seekBarRotate!!.visibility = View.INVISIBLE
-                rotatePlus!!.visibility = View.INVISIBLE
-                changeTextSize(currentText!!.textSize.toInt())
-            }
+        //Text Size
+        sizeMinus!!.setOnClickListener {
+            seekBarSize!!.progress = currentText!!.textSize.toInt() - 1
         }
 
-        sizeMinus!!.setOnClickListener {
-            changeTextSize(currentText!!.textSize.toInt() - 1)
-        }
+        seekBarSize!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currentText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress.toFloat())
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
 
         sizePlus!!.setOnClickListener {
-            changeTextSize(currentText!!.textSize.toInt() + 1)
+            seekBarSize!!.progress = currentText!!.textSize.toInt() + 1
         }
 
-        //Rotate text
-        rotateButton!!.setOnClickListener {
-            if (seekBarRotate!!.isShown) {
-                rotateMinus!!.visibility = View.INVISIBLE
-                seekBarRotate!!.visibility = View.INVISIBLE
-                rotatePlus!!.visibility = View.INVISIBLE
-            } else {
-                sizeMinus!!.visibility = View.INVISIBLE
-                seekBarSize!!.visibility = View.INVISIBLE
-                sizePlus!!.visibility = View.INVISIBLE
-                rotateMinus!!.visibility = View.VISIBLE
-                seekBarRotate!!.visibility = View.VISIBLE
-                rotatePlus!!.visibility = View.VISIBLE
-                rotatTextView(currentText!!.rotation.toInt())
-            }
-        }
-
+        //Text rotation
         rotateMinus!!.setOnClickListener {
-            rotatTextView(currentText!!.rotation.toInt() - 1)
+            seekBarRotate!!.progress = currentText!!.rotation.toInt() - 1
         }
+
+        seekBarRotate!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currentText!!.rotation = progress.toFloat()
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
 
         rotatePlus!!.setOnClickListener {
-            rotatTextView(currentText!!.rotation.toInt() + 1)
+            seekBarRotate!!.progress = currentText!!.rotation.toInt() + 1
+        }
+
+        //Text Spacing
+        spaceMinus!!.setOnClickListener {
+            currentText!!.setLineSpacing(currentText!!.lineSpacingExtra - 1, 1F)
+        }
+
+        seekBarSpace!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currentText!!.setLineSpacing(progress.toFloat(), 1F)
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
+
+        spacePlus!!.setOnClickListener {
+            currentText!!.setLineSpacing(currentText!!.lineSpacingExtra + 1, 1F)
+        }
+
+        //Text Shadow
+        shadowMinus!!.setOnClickListener {
+            currentText!!.setShadowLayer(currentText!!.shadowRadius - 1, currentText!!.shadowDx - 1, currentText!!.shadowDy - 1, Color.parseColor("#FF000000"))
+        }
+
+        seekBarShadow!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currentText!!.setShadowLayer(progress.toFloat(), progress.toFloat(), progress.toFloat(), Color.parseColor("#FF000000"))
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
+
+        shadowPlus!!.setOnClickListener {
+            currentText!!.setShadowLayer(currentText!!.shadowRadius + 1, currentText!!.shadowDx + 1, currentText!!.shadowDy + 1, Color.parseColor("#FF000000"))
         }
 
         //Change color
         colorButton.setOnClickListener {
-            seekBarRotate!!.visibility = View.INVISIBLE
-            seekBarSize!!.visibility = View.INVISIBLE
             openColorPicker()
         }
 
         //Font changer
         fontButton.setOnClickListener {
-            rotateMinus!!.visibility = View.INVISIBLE
-            seekBarRotate!!.visibility = View.INVISIBLE
-            rotatePlus!!.visibility = View.INVISIBLE
-            sizeMinus!!.visibility = View.INVISIBLE
-            seekBarSize!!.visibility = View.INVISIBLE
-            sizePlus!!.visibility = View.INVISIBLE
             openFontChanger(currentText!!.text.toString())
         }
 
@@ -581,51 +627,6 @@ class Home : AppCompatActivity() {
 
     }
 
-    private fun rotatTextView(rotation: Int) {
-        seekBarRotate!!.max = 360
-        seekBarRotate!!.progress = rotation
-
-        seekBarRotate!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            @SuppressLint("SetTextI18n")
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                currentText!!.rotation = progress.toFloat()
-                rotateButton!!.text = "Angle: $progress"
-
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-            }
-        })
-    }
-
-    private fun changeTextSize(size: Int) {
-        seekBarSize!!.max = 500
-        seekBarSize!!.progress = size
-
-        seekBarSize!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            @SuppressLint("SetTextI18n")
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                currentText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress.toFloat())
-                sizeButton!!.text = "Size: $progress"
-
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-            }
-        })
-
-    }
-
     @SuppressLint("SetTextI18n")
     private fun createTextBuilder() {
         if (id < 5) {
@@ -696,10 +697,10 @@ class Home : AppCompatActivity() {
             builder.setCancelable(false)
 
             builder.setPositiveButton("Submit") { _, _ ->
-                if(dEditText.text.toString() == ""){
+                if (dEditText.text.toString() == "") {
                     Toast.makeText(this, "Type something", Toast.LENGTH_LONG).show()
                     return@setPositiveButton
-                }else{
+                } else {
                     createText(dEditText.text.toString(), dEditText.gravity)
                 }
             }
@@ -715,7 +716,7 @@ class Home : AppCompatActivity() {
             builder.show()
 
         } else {
-            Toast.makeText(this, "Maximum 5 Texts you can use", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Maximum 5 texts you can use", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -724,11 +725,10 @@ class Home : AppCompatActivity() {
 
         val set = ConstraintSet()
         set.clone(imageConst!!)
-        //New textview
         textArray!![id].text = text
         textArray!![id].id = id
         textArray!![id].isClickable = true
-        textArray!![id].setPadding(8, 8, 8, 8)
+        textArray!![id].setPadding(1, 1, 1, 1)
         textArray!![id].gravity = gravity!!
         textArray!![id].setTextColor(Color.parseColor("#FF000000"))
         imageConst!!.addView(textArray!![id])
