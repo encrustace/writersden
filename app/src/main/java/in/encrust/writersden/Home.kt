@@ -721,7 +721,7 @@ class Home : AppCompatActivity() {
         textArray!![id].text = text
         textArray!![id].id = id
         textArray!![id].isClickable = true
-        textArray!![id].setPadding(1, 1, 1, 1)
+        textArray!![id].setPadding(16, 0, 16, 0)
         textArray!![id].gravity = gravity!!
         textArray!![id].setTextColor(Color.parseColor("#FF000000"))
         imageConst!!.addView(textArray!![id])
