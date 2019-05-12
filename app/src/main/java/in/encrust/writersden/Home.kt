@@ -93,7 +93,6 @@ class Home : AppCompatActivity() {
         stylingConst = findViewById(R.id.home_stylingconst)
         val colorButton = findViewById<Button>(R.id.home_textcolor)
         val fontButton = findViewById<Button>(R.id.home_textfont)
-        val artButton = findViewById<Button>(R.id.home_arts)
         val editButton = findViewById<Button>(R.id.home_edittext)
         sizeMinus = findViewById(R.id.seekbarsize_left)
         seekBarSize = findViewById(R.id.home_seekbarsize)
