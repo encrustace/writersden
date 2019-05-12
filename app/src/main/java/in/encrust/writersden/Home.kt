@@ -378,12 +378,6 @@ class Home : AppCompatActivity() {
 
         //Edit text
         editButton.setOnClickListener {
-            rotateMinus!!.visibility = View.INVISIBLE
-            seekBarRotate!!.visibility = View.INVISIBLE
-            rotatePlus!!.visibility = View.INVISIBLE
-            sizeMinus!!.visibility = View.INVISIBLE
-            seekBarSize!!.visibility = View.INVISIBLE
-            sizePlus!!.visibility = View.INVISIBLE
             editTextMethod(currentText!!.text.toString(), currentText!!.gravity)
         }
 
