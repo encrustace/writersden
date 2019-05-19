@@ -78,6 +78,12 @@ class Home : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     private var gestureDetector: GestureDetector? = null
 
+    //Show size, angle, etc
+    private var showSize: TextView? = null
+    private var showAngle: TextView? = null
+    private var showGap: TextView? = null
+    private var showShadow: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
@@ -107,6 +113,11 @@ class Home : AppCompatActivity() {
         seekBarShadow = findViewById(R.id.home_seekbarshadow)
         shadowPlus = findViewById(R.id.seekbarshadow_right)
         gestureDetector = GestureDetector(this, SingleTapConfirm())
+
+        showSize = findViewById(R.id.seekbarsize_show)
+        showAngle = findViewById(R.id.seekbarrotate_show)
+        showGap = findViewById(R.id.seekbargap_show)
+        showShadow = findViewById(R.id.seekbarshadow_show)
 
 
         textArray = ArrayList()
@@ -174,9 +185,13 @@ class Home : AppCompatActivity() {
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![0]
                     seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    showSize!!.text = currentText!!.textSize.toInt().toString()
                     seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    showAngle!!.text = currentText!!.rotation.toInt().toString()
                     seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
                     seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
+                    showShadow!!.text = currentText!!.shadowDx.toInt().toString()
                 }
 
                 true
@@ -217,9 +232,13 @@ class Home : AppCompatActivity() {
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![1]
                     seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    showSize!!.text = currentText!!.textSize.toInt().toString()
                     seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    showAngle!!.text = currentText!!.rotation.toInt().toString()
                     seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
                     seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
+                    showShadow!!.text = currentText!!.shadowDx.toInt().toString()
                 }
 
                 true
@@ -261,9 +280,13 @@ class Home : AppCompatActivity() {
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![2]
                     seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    showSize!!.text = currentText!!.textSize.toInt().toString()
                     seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    showAngle!!.text = currentText!!.rotation.toInt().toString()
                     seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
                     seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
+                    showShadow!!.text = currentText!!.shadowDx.toInt().toString()
                 }
 
                 true
@@ -305,9 +328,13 @@ class Home : AppCompatActivity() {
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![3]
                     seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    showSize!!.text = currentText!!.textSize.toInt().toString()
                     seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    showAngle!!.text = currentText!!.rotation.toInt().toString()
                     seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
                     seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
+                    showShadow!!.text = currentText!!.shadowDx.toInt().toString()
                 }
 
                 true
@@ -348,9 +375,13 @@ class Home : AppCompatActivity() {
                     itemConst!!.visibility = View.INVISIBLE
                     currentText = textArray!![4]
                     seekBarSize!!.progress = currentText!!.textSize.toInt()
+                    showSize!!.text = currentText!!.textSize.toInt().toString()
                     seekBarRotate!!.progress = currentText!!.rotation.toInt()
+                    showAngle!!.text = currentText!!.rotation.toInt().toString()
                     seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
+                    showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
                     seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
+                    showShadow!!.text = currentText!!.shadowDx.toInt().toString()
                 }
 
                 true
@@ -384,12 +415,14 @@ class Home : AppCompatActivity() {
         //Text Size
         sizeMinus!!.setOnClickListener {
             seekBarSize!!.progress = currentText!!.textSize.toInt() - 1
+            showSize!!.text = currentText!!.textSize.toInt().toString()
         }
 
         seekBarSize!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currentText!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress.toFloat())
+                showSize!!.text = currentText!!.textSize.toInt().toString()
 
             }
 
@@ -404,17 +437,20 @@ class Home : AppCompatActivity() {
 
         sizePlus!!.setOnClickListener {
             seekBarSize!!.progress = currentText!!.textSize.toInt() + 1
+            showSize!!.text = currentText!!.textSize.toInt().toString()
         }
 
         //Text rotation
         rotateMinus!!.setOnClickListener {
             seekBarRotate!!.progress = currentText!!.rotation.toInt() - 1
+            showAngle!!.text = currentText!!.rotation.toInt().toString()
         }
 
         seekBarRotate!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currentText!!.rotation = progress.toFloat()
+                showAngle!!.text = currentText!!.rotation.toInt().toString()
 
             }
 
@@ -429,17 +465,20 @@ class Home : AppCompatActivity() {
 
         rotatePlus!!.setOnClickListener {
             seekBarRotate!!.progress = currentText!!.rotation.toInt() + 1
+            showAngle!!.text = currentText!!.rotation.toInt().toString()
         }
 
         //Text Spacing
         spaceMinus!!.setOnClickListener {
             currentText!!.setLineSpacing(currentText!!.lineSpacingExtra - 1, 1F)
+            showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
         }
 
         seekBarSpace!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currentText!!.setLineSpacing(progress.toFloat(), 1F)
+                showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
 
             }
 
@@ -454,17 +493,20 @@ class Home : AppCompatActivity() {
 
         spacePlus!!.setOnClickListener {
             currentText!!.setLineSpacing(currentText!!.lineSpacingExtra + 1, 1F)
+            showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
         }
 
         //Text Shadow
         shadowMinus!!.setOnClickListener {
             currentText!!.setShadowLayer(currentText!!.shadowRadius - 1, currentText!!.shadowDx - 1, currentText!!.shadowDy - 1, Color.parseColor("#FF000000"))
+            showShadow!!.text = currentText!!.shadowDx.toInt().toString()
         }
 
         seekBarShadow!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currentText!!.setShadowLayer(progress.toFloat(), progress.toFloat(), progress.toFloat(), Color.parseColor("#FF000000"))
+                showShadow!!.text = currentText!!.shadowDx.toInt().toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -478,6 +520,7 @@ class Home : AppCompatActivity() {
 
         shadowPlus!!.setOnClickListener {
             currentText!!.setShadowLayer(currentText!!.shadowRadius + 1, currentText!!.shadowDx + 1, currentText!!.shadowDy + 1, Color.parseColor("#FF000000"))
+            showShadow!!.text = currentText!!.shadowDx.toInt().toString()
         }
 
         //Change color

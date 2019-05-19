@@ -45,7 +45,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId="ca-app-pub-3631456530050074/9791507889"
         ads:layout_constraintTop_toBottomOf="@+id/home_toolbar"
         ads:layout_constraintBottom_toTopOf="@+id/home_imageconst">
     </com.google.android.gms.ads.AdView>
@@ -145,245 +145,297 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/home_stylingconst"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="8dp"
-        android:background="@color/colorPrimary"
-        android:elevation="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/home_imageconst"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/seekbarsize_text"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/ic_scale"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <Button
-            android:id="@+id/seekbarsize_left"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/ic_minus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"
-            app:layout_constraintStart_toEndOf="@+id/seekbarsize_text"/>
-
-        <SeekBar
-            android:id="@+id/home_seekbarsize"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:max="500"
-            app:layout_constraintStart_toEndOf="@+id/seekbarsize_left"
-            app:layout_constraintEnd_toStartOf="@+id/seekbarsize_right"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"/>
-
-        <Button
-            android:id="@+id/seekbarsize_right"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/ic_plus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-        <Button
-            android:id="@+id/seekbarrotate_text"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/ic_rotate"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-
-        <Button
-            android:id="@+id/seekbarrotate_left"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/ic_minus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"
-            app:layout_constraintStart_toEndOf="@+id/seekbarrotate_text"/>
-
-        <SeekBar
-            android:id="@+id/home_seekbarrotate"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:max="360"
-            app:layout_constraintStart_toEndOf="@+id/seekbarrotate_left"
-            app:layout_constraintEnd_toStartOf="@+id/seekbarrotate_right"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"/>
-
-
-        <Button
-            android:id="@+id/seekbarrotate_right"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/ic_plus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-
-        <Button
-            android:id="@+id/seekbargap_text"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/ic_spacing"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <Button
-            android:id="@+id/seekbargap_left"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/ic_minus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"
-            app:layout_constraintStart_toEndOf="@+id/seekbargap_text"/>
-
-        <SeekBar
-            android:id="@+id/home_seekbargap"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:max="100"
-            android:min="-100"
-            app:layout_constraintEnd_toStartOf="@+id/seekbargap_right"
-            app:layout_constraintStart_toEndOf="@+id/seekbargap_left"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"/>
-
-        <Button
-            android:id="@+id/seekbargap_right"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/ic_plus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
-            app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-
-        <Button
-            android:id="@+id/seekbarshadow_text"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/ic_shadow"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
-            app:layout_constraintBottom_toTopOf="@+id/home_textcolor"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <Button
-            android:id="@+id/seekbarshadow_left"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/ic_minus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
-            app:layout_constraintBottom_toTopOf="@+id/home_textcolor"
-            app:layout_constraintStart_toEndOf="@+id/seekbargap_text"/>
-
-        <SeekBar
-            android:id="@+id/home_seekbarshadow"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:max="25"
-            app:layout_constraintEnd_toStartOf="@+id/seekbargap_right"
-            app:layout_constraintStart_toEndOf="@+id/seekbargap_left"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
-            app:layout_constraintBottom_toTopOf="@+id/home_textcolor"/>
-
-        <Button
-            android:id="@+id/seekbarshadow_right"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/ic_plus"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
-            app:layout_constraintBottom_toTopOf="@+id/home_textcolor"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-        <Button
-            android:id="@+id/home_textcolor"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/colorAccent"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:text="Color"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/home_edittext"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-
-        <Button
-            android:id="@+id/home_edittext"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="4dp"
-            android:background="@color/colorAccent"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:text="Text"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toEndOf="@+id/home_textcolor"
-            app:layout_constraintEnd_toStartOf="@+id/home_textfont"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-
-        <Button
-            android:id="@+id/home_textfont"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:background="@color/colorAccent"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:text="Font"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toEndOf="@+id/home_edittext"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
+	
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/home_stylingconst"
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:layout_margin="8dp"
+			android:background="@color/colorPrimary"
+			android:elevation="8dp"
+			app:layout_constraintTop_toBottomOf="@+id/home_imageconst"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+		
+		<Button
+				android:id="@+id/seekbarsize_text"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="4dp"
+				android:background="@drawable/ic_scale"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"
+				app:layout_constraintStart_toStartOf="parent"/>
+		
+		<Button
+				android:id="@+id/seekbarsize_left"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="8dp"
+				android:background="@drawable/ic_minus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"
+				app:layout_constraintStart_toEndOf="@+id/seekbarsize_text"/>
+		
+		<SeekBar
+				android:id="@+id/home_seekbarsize"
+				android:layout_width="0dp"
+				android:layout_height="24dp"
+				android:max="500"
+				app:layout_constraintStart_toEndOf="@+id/seekbarsize_left"
+				app:layout_constraintEnd_toStartOf="@+id/seekbarsize_right"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"/>
+		
+		<Button
+				android:id="@+id/seekbarsize_right"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginEnd="4dp"
+				android:background="@drawable/ic_plus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"
+				app:layout_constraintEnd_toStartOf="@+id/seekbarsize_show"/>
+		
+		<TextView
+				android:id="@+id/seekbarsize_show"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:background="@color/colorAccent"
+				android:text="00"
+				android:gravity="center"
+				android:textColor="@color/colorPrimary"
+				android:textSize="14sp"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarrotate"
+				app:layout_constraintEnd_toEndOf="parent"/>
+		
+		
+		<Button
+				android:id="@+id/seekbarrotate_text"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="4dp"
+				android:background="@drawable/ic_rotate"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"
+				app:layout_constraintStart_toStartOf="parent"/>
+		
+		
+		<Button
+				android:id="@+id/seekbarrotate_left"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="8dp"
+				android:background="@drawable/ic_minus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"
+				app:layout_constraintStart_toEndOf="@+id/seekbarrotate_text"/>
+		
+		<SeekBar
+				android:id="@+id/home_seekbarrotate"
+				android:layout_width="0dp"
+				android:layout_height="24dp"
+				android:max="360"
+				app:layout_constraintStart_toEndOf="@+id/seekbarrotate_left"
+				app:layout_constraintEnd_toStartOf="@+id/seekbarrotate_right"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"/>
+		
+		
+		<Button
+				android:id="@+id/seekbarrotate_right"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginEnd="4dp"
+				android:background="@drawable/ic_plus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"
+				app:layout_constraintEnd_toStartOf="@+id/seekbarrotate_show"/>
+		
+		
+		<TextView
+				android:id="@+id/seekbarrotate_show"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:background="@color/colorAccent"
+				android:text="00"
+				android:gravity="center"
+				android:textColor="@color/colorPrimary"
+				android:textSize="14sp"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarsize"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbargap"
+				app:layout_constraintEnd_toEndOf="parent"/>
+		
+		
+		
+		<Button
+				android:id="@+id/seekbargap_text"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="4dp"
+				android:background="@drawable/ic_spacing"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"
+				app:layout_constraintStart_toStartOf="parent"/>
+		
+		<Button
+				android:id="@+id/seekbargap_left"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="8dp"
+				android:background="@drawable/ic_minus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"
+				app:layout_constraintStart_toEndOf="@+id/seekbargap_text"/>
+		
+		<SeekBar
+				android:id="@+id/home_seekbargap"
+				android:layout_width="0dp"
+				android:layout_height="24dp"
+				android:max="100"
+				android:min="-100"
+				app:layout_constraintEnd_toStartOf="@+id/seekbargap_right"
+				app:layout_constraintStart_toEndOf="@+id/seekbargap_left"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"/>
+		
+		<Button
+				android:id="@+id/seekbargap_right"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginEnd="4dp"
+				android:background="@drawable/ic_plus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"
+				app:layout_constraintEnd_toStartOf="@+id/seekbargap_show"/>
+		
+		<TextView
+				android:id="@+id/seekbargap_show"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:background="@color/colorAccent"
+				android:text="00"
+				android:gravity="center"
+				android:textColor="@color/colorPrimary"
+				android:textSize="14sp"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbarrotate"
+				app:layout_constraintBottom_toTopOf="@+id/home_seekbarshadow"
+				app:layout_constraintEnd_toEndOf="parent"/>
+		
+		
+		
+		<Button
+				android:id="@+id/seekbarshadow_text"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="4dp"
+				android:background="@drawable/ic_shadow"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
+				app:layout_constraintBottom_toTopOf="@+id/home_textcolor"
+				app:layout_constraintStart_toStartOf="parent"/>
+		
+		<Button
+				android:id="@+id/seekbarshadow_left"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginStart="8dp"
+				android:background="@drawable/ic_minus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
+				app:layout_constraintBottom_toTopOf="@+id/home_textcolor"
+				app:layout_constraintStart_toEndOf="@+id/seekbargap_text"/>
+		
+		<SeekBar
+				android:id="@+id/home_seekbarshadow"
+				android:layout_width="0dp"
+				android:layout_height="24dp"
+				android:max="25"
+				app:layout_constraintEnd_toStartOf="@+id/seekbargap_right"
+				app:layout_constraintStart_toEndOf="@+id/seekbargap_left"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
+				app:layout_constraintBottom_toTopOf="@+id/home_textcolor"/>
+		
+		<Button
+				android:id="@+id/seekbarshadow_right"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginEnd="4dp"
+				android:background="@drawable/ic_plus"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
+				app:layout_constraintBottom_toTopOf="@+id/home_textcolor"
+				app:layout_constraintEnd_toStartOf="@+id/seekbarshadow_show"/>
+		
+		
+		<TextView
+				android:id="@+id/seekbarshadow_show"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:background="@color/colorAccent"
+				android:text="00"
+				android:gravity="center"
+				android:textColor="@color/colorPrimary"
+				android:textSize="14sp"
+				app:layout_constraintTop_toBottomOf="@+id/home_seekbargap"
+				app:layout_constraintBottom_toTopOf="@+id/home_textcolor"
+				app:layout_constraintEnd_toEndOf="parent"/>
+		
+		
+		<Button
+				android:id="@+id/home_textcolor"
+				android:layout_width="0dp"
+				android:layout_height="40dp"
+				android:layout_marginStart="4dp"
+				android:layout_marginBottom="4dp"
+				android:background="@color/colorAccent"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				android:text="Color"
+				android:textColor="@color/colorWhite"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toStartOf="@+id/home_edittext"
+				app:layout_constraintBottom_toBottomOf="parent" />
+		
+		
+		<Button
+				android:id="@+id/home_edittext"
+				android:layout_width="0dp"
+				android:layout_height="40dp"
+				android:layout_marginBottom="4dp"
+				android:layout_marginStart="4dp"
+				android:background="@color/colorAccent"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				android:text="Text"
+				android:textColor="@color/colorWhite"
+				app:layout_constraintStart_toEndOf="@+id/home_textcolor"
+				app:layout_constraintEnd_toStartOf="@+id/home_textfont"
+				app:layout_constraintBottom_toBottomOf="parent" />
+		
+		
+		<Button
+				android:id="@+id/home_textfont"
+				android:layout_width="0dp"
+				android:layout_height="40dp"
+				android:layout_marginBottom="4dp"
+				android:layout_marginStart="4dp"
+				android:layout_marginEnd="4dp"
+				android:background="@color/colorAccent"
+				android:foreground="?attr/selectableItemBackgroundBorderless"
+				android:text="Font"
+				android:textColor="@color/colorWhite"
+				app:layout_constraintStart_toEndOf="@+id/home_edittext"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintBottom_toBottomOf="parent" />
+	
+	
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
 </androidx.constraintlayout.widget.ConstraintLayout>
