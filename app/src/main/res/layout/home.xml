@@ -184,7 +184,7 @@
 				android:id="@+id/home_seekbarsize"
 				android:layout_width="0dp"
 				android:layout_height="24dp"
-				android:max="500"
+				android:max="200"
 				app:layout_constraintStart_toEndOf="@+id/seekbarsize_left"
 				app:layout_constraintEnd_toStartOf="@+id/seekbarsize_right"
 				app:layout_constraintTop_toTopOf="parent"
