@@ -84,6 +84,7 @@ class Home : AppCompatActivity() {
     private var showGap: TextView? = null
     private var showShadow: TextView? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
