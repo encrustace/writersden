@@ -8,8 +8,8 @@ android {
         applicationId "in.encrust.writersden"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -38,7 +38,7 @@ dependencies {
     //Crop
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     //Admob
-    implementation 'com.google.android.gms:play-services-ads:17.2.0'
+    implementation 'com.google.android.gms:play-services-ads:17.2.1'
 }
 repositories {
     mavenCentral()

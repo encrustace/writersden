@@ -57,8 +57,8 @@ class Home : AppCompatActivity() {
     private var imageConst: ConstraintLayout? = null
     private var itemConst: ConstraintLayout? = null
     private var stylingConst: ConstraintLayout? = null
-    private var x_cord: Float = 0.toFloat()
-    private var y_cord: Float = 0.toFloat()
+    private var xCord: Float = 0.toFloat()
+    private var yCord: Float = 0.toFloat()
     private var imageView: ImageView? = null
     private var sizeMinus: Button? = null
     private var seekBarSize: SeekBar? = null
@@ -89,35 +89,35 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.home)
 
         adView = findViewById(R.id.adView)
-        imageConst = findViewById(R.id.home_imageconst)
+        imageConst = findViewById(R.id.image_const)
         imageView = findViewById(R.id.home_image)
-        itemConst = findViewById(R.id.home_itemconst)
+        itemConst = findViewById(R.id.item_const)
         val shareButton = findViewById<Button>(R.id.home_share)
-        val imageButton = findViewById<Button>(R.id.home_imagebutton)
-        val textButton = findViewById<Button>(R.id.home_textbutton)
+        val imageButton = findViewById<Button>(R.id.image_button)
+        val textButton = findViewById<Button>(R.id.text_button)
         recyclerView = findViewById(R.id.home_recycler)
-        stylingConst = findViewById(R.id.home_stylingconst)
-        val colorButton = findViewById<Button>(R.id.home_textcolor)
-        val fontButton = findViewById<Button>(R.id.home_textfont)
-        val editButton = findViewById<Button>(R.id.home_edittext)
-        sizeMinus = findViewById(R.id.seekbarsize_left)
-        seekBarSize = findViewById(R.id.home_seekbarsize)
-        sizePlus = findViewById(R.id.seekbarsize_right)
-        rotateMinus = findViewById(R.id.seekbarrotate_left)
-        seekBarRotate = findViewById(R.id.home_seekbarrotate)
-        rotatePlus = findViewById(R.id.seekbarrotate_right)
-        spaceMinus = findViewById(R.id.seekbargap_left)
-        seekBarSpace = findViewById(R.id.home_seekbargap)
-        spacePlus = findViewById(R.id.seekbargap_right)
-        shadowMinus = findViewById(R.id.seekbarshadow_left)
-        seekBarShadow = findViewById(R.id.home_seekbarshadow)
-        shadowPlus = findViewById(R.id.seekbarshadow_right)
+        stylingConst = findViewById(R.id.styling_const)
+        val colorButton = findViewById<Button>(R.id.text_color)
+        val fontButton = findViewById<Button>(R.id.text_font)
+        val editButton = findViewById<Button>(R.id.edit_text)
+        sizeMinus = findViewById(R.id.seek_size_minus)
+        seekBarSize = findViewById(R.id.seek_size)
+        sizePlus = findViewById(R.id.seek_size_plus)
+        rotateMinus = findViewById(R.id.seek_rotate_minus)
+        seekBarRotate = findViewById(R.id.seek_rotate)
+        rotatePlus = findViewById(R.id.seek_rotate_plus)
+        spaceMinus = findViewById(R.id.seek_gap_minus)
+        seekBarSpace = findViewById(R.id.seek_gap)
+        spacePlus = findViewById(R.id.seek_gap_plus)
+        shadowMinus = findViewById(R.id.seek_shadow_minus)
+        seekBarShadow = findViewById(R.id.seek_shadow)
+        shadowPlus = findViewById(R.id.seek_shadow_plus)
         gestureDetector = GestureDetector(this, SingleTapConfirm())
 
-        showSize = findViewById(R.id.seekbarsize_show)
-        showAngle = findViewById(R.id.seekbarrotate_show)
-        showGap = findViewById(R.id.seekbargap_show)
-        showShadow = findViewById(R.id.seekbarshadow_show)
+        showSize = findViewById(R.id.seek_size_show)
+        showAngle = findViewById(R.id.seek_rotate_show)
+        showGap = findViewById(R.id.seek_gap_show)
+        showShadow = findViewById(R.id.seek_shadow_show)
 
 
         textArray = ArrayList()
@@ -199,13 +199,13 @@ class Home : AppCompatActivity() {
 
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        x_cord = v.x - event.rawX
-                        y_cord = v.y - event.rawY
+                        xCord = v.x - event.rawX
+                        yCord = v.y - event.rawY
                     }
 
                     MotionEvent.ACTION_MOVE -> v.animate()
-                            .x(event.rawX + x_cord)
-                            .y(event.rawY + y_cord)
+                            .x(event.rawX + xCord)
+                            .y(event.rawY + yCord)
                             .setDuration(0)
                             .start()
 
@@ -246,13 +246,13 @@ class Home : AppCompatActivity() {
 
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        x_cord = v.x - event.rawX
-                        y_cord = v.y - event.rawY
+                        xCord = v.x - event.rawX
+                        yCord = v.y - event.rawY
                     }
 
                     MotionEvent.ACTION_MOVE -> v.animate()
-                            .x(event.rawX + x_cord)
-                            .y(event.rawY + y_cord)
+                            .x(event.rawX + xCord)
+                            .y(event.rawY + yCord)
                             .setDuration(0)
                             .start()
 
@@ -294,13 +294,13 @@ class Home : AppCompatActivity() {
 
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        x_cord = v.x - event.rawX
-                        y_cord = v.y - event.rawY
+                        xCord = v.x - event.rawX
+                        yCord = v.y - event.rawY
                     }
 
                     MotionEvent.ACTION_MOVE -> v.animate()
-                            .x(event.rawX + x_cord)
-                            .y(event.rawY + y_cord)
+                            .x(event.rawX + xCord)
+                            .y(event.rawY + yCord)
                             .setDuration(0)
                             .start()
 
@@ -342,13 +342,13 @@ class Home : AppCompatActivity() {
 
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        x_cord = v.x - event.rawX
-                        y_cord = v.y - event.rawY
+                        xCord = v.x - event.rawX
+                        yCord = v.y - event.rawY
                     }
 
                     MotionEvent.ACTION_MOVE -> v.animate()
-                            .x(event.rawX + x_cord)
-                            .y(event.rawY + y_cord)
+                            .x(event.rawX + xCord)
+                            .y(event.rawY + yCord)
                             .setDuration(0)
                             .start()
 
@@ -389,13 +389,13 @@ class Home : AppCompatActivity() {
 
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        x_cord = v.x - event.rawX
-                        y_cord = v.y - event.rawY
+                        xCord = v.x - event.rawX
+                        yCord = v.y - event.rawY
                     }
 
                     MotionEvent.ACTION_MOVE -> v.animate()
-                            .x(event.rawX + x_cord)
-                            .y(event.rawY + y_cord)
+                            .x(event.rawX + xCord)
+                            .y(event.rawY + yCord)
                             .setDuration(0)
                             .start()
 
@@ -764,7 +764,7 @@ class Home : AppCompatActivity() {
         textArray!![id].text = text
         textArray!![id].id = id
         textArray!![id].isClickable = true
-        textArray!![id].setPadding(100, 50, 100, 50)
+        textArray!![id].setPadding(50, 52, 50, 25)
         textArray!![id].gravity = gravity!!
         textArray!![id].setTextColor(Color.parseColor("#FF000000"))
         imageConst!!.addView(textArray!![id])

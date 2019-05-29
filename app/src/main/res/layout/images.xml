@@ -11,11 +11,11 @@
 
     <ImageView
         android:id="@+id/images"
-        android:layout_width="192dp"
-        android:layout_height="192dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
-        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:foreground="?attr/selectableItemBackgroundBorderless"/>
 
 </androidx.cardview.widget.CardView>
