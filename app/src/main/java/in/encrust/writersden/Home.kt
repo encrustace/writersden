@@ -544,7 +544,20 @@ class Home : AppCompatActivity() {
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
-        val path = File(Environment.getExternalStorageDirectory().toString() + "/" + "wd.jpg")
+        val dir = File(Environment.getExternalStorageDirectory().toString() + "/Pictures/WritersDen")
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+        var n = 0
+        var path = File("$dir/wd$n.jpg")
+        while (true) {
+            if (path.exists()) {
+                n++
+                path = File("$dir/wd$n.jpg")
+            } else {
+                break
+            }
+        }
         val fileOutputStream: FileOutputStream
         try {
             fileOutputStream = FileOutputStream(path)
@@ -764,7 +777,7 @@ class Home : AppCompatActivity() {
         textArray!![id].text = text
         textArray!![id].id = id
         textArray!![id].isClickable = true
-        textArray!![id].setPadding(50, 52, 50, 25)
+        textArray!![id].setPadding(50, 25, 50, 25)
         textArray!![id].gravity = gravity!!
         textArray!![id].setTextColor(Color.parseColor("#FF000000"))
         imageConst!!.addView(textArray!![id])
