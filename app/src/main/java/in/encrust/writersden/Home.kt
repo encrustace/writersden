@@ -410,7 +410,7 @@ class Home : AppCompatActivity() {
 
         //Edit text
         editButton.setOnClickListener {
-            editTextMethod(currentText!!.text.toString(), currentText!!.gravity)
+            editTextMethod(currentText!!.text.trim().toString(), currentText!!.gravity)
         }
 
         //Text Size
@@ -663,7 +663,7 @@ class Home : AppCompatActivity() {
 
         builder.setView(editConstraint)
         builder.setPositiveButton("Submit") { _, _ ->
-            currentText!!.text = dEditText.text
+            currentText!!.text = " " + dEditText.text + " "
             currentText!!.gravity = dEditText.gravity
         }.setNegativeButton("Cancel") { _, _ -> }
 
@@ -775,11 +775,12 @@ class Home : AppCompatActivity() {
 
         val set = ConstraintSet()
         set.clone(imageConst!!)
-        textArray!![id].text = text
+        textArray!![id].text = " $text "
         textArray!![id].id = id
         textArray!![id].isClickable = true
-        textArray!![id].setPadding(50, 25, 50, 25)
+        textArray!![id].setPadding(10, 10, 10, 10)
         textArray!![id].gravity = gravity!!
+        textArray!![id].paintFlags = View.INVISIBLE
         textArray!![id].setTextColor(Color.parseColor("#FF000000"))
         imageConst!!.addView(textArray!![id])
         set.connect(textArray!![id].id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0)
