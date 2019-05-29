@@ -49,6 +49,7 @@ import kotlin.arrayOf as arrayOf1
 
 class Home : AppCompatActivity() {
     private var adView: AdView? = null
+    private var marqueeText: TextView? = null
     private var imageList: ArrayList<Drawable>? = null
     private var fontList: ArrayList<Typeface>? = null
     private var fontNamesList: List<String>? = null
@@ -90,6 +91,7 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.home)
 
         adView = findViewById(R.id.adView)
+        marqueeText = findViewById(R.id.text_ads)
         imageConst = findViewById(R.id.image_const)
         imageView = findViewById(R.id.home_image)
         itemConst = findViewById(R.id.item_const)
@@ -130,6 +132,7 @@ class Home : AppCompatActivity() {
 
         makeImageList()
         makeFontList()
+        marqueeText!!.isSelected = true
         stylingConst!!.visibility = View.INVISIBLE
 
         selectImage(1)
