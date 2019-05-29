@@ -833,10 +833,8 @@ class Home : AppCompatActivity() {
     private fun loadImages() {
 
         val linearLayoutManager = LinearLayoutManager(applicationContext)
-        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        linearLayoutManager.stackFromEnd = false
+        linearLayoutManager.orientation = RecyclerView.HORIZONTAL
         recyclerView!!.layoutManager = linearLayoutManager
-
         val imageAdapter = ImageAdapter(this, imageList)
         recyclerView!!.adapter = imageAdapter
     }
