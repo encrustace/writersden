@@ -90,7 +90,7 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.home)
 
         adView = findViewById(R.id.adView)
-        imageConst = findViewById(R.id.image_const)
+        imageConst = findViewById(R.id.save_cost)
         imageView = findViewById(R.id.home_image)
         itemConst = findViewById(R.id.item_const)
         val shareButton = findViewById<Button>(R.id.home_share)
@@ -537,10 +537,10 @@ class Home : AppCompatActivity() {
     }
 
     private fun takeScreenshot(): Bitmap {
-        imageView!!.isDrawingCacheEnabled = true
-        imageView!!.buildDrawingCache(true)
-        val b = Bitmap.createBitmap(imageView!!.drawingCache)
-        imageView!!.isDrawingCacheEnabled = false
+        imageConst!!.isDrawingCacheEnabled = true
+        imageConst!!.buildDrawingCache(true)
+        val b = Bitmap.createBitmap(imageConst!!.drawingCache)
+        imageConst!!.isDrawingCacheEnabled = false
         return b
     }
 
