@@ -472,6 +472,7 @@ class Home : AppCompatActivity() {
         //Text Spacing
         spaceMinus!!.setOnClickListener {
             currentText!!.setLineSpacing(currentText!!.lineSpacingExtra - 1, 1F)
+            seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
             showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
         }
 
@@ -494,12 +495,14 @@ class Home : AppCompatActivity() {
 
         spacePlus!!.setOnClickListener {
             currentText!!.setLineSpacing(currentText!!.lineSpacingExtra + 1, 1F)
+            seekBarSpace!!.progress = currentText!!.lineSpacingExtra.toInt()
             showGap!!.text = currentText!!.lineSpacingExtra.toInt().toString()
         }
 
         //Text Shadow
         shadowMinus!!.setOnClickListener {
             currentText!!.setShadowLayer(currentText!!.shadowRadius - 1, currentText!!.shadowDx - 1, currentText!!.shadowDy - 1, Color.parseColor("#FF000000"))
+            seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
             showShadow!!.text = currentText!!.shadowDx.toInt().toString()
         }
 
@@ -521,6 +524,7 @@ class Home : AppCompatActivity() {
 
         shadowPlus!!.setOnClickListener {
             currentText!!.setShadowLayer(currentText!!.shadowRadius + 1, currentText!!.shadowDx + 1, currentText!!.shadowDy + 1, Color.parseColor("#FF000000"))
+            seekBarShadow!!.progress = currentText!!.shadowDx.toInt()
             showShadow!!.text = currentText!!.shadowDx.toInt().toString()
         }
 
@@ -545,7 +549,7 @@ class Home : AppCompatActivity() {
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
-        val dir = File(Environment.getExternalStorageDirectory().toString() + "/Pictures/WritersDen")
+        val dir = File(Environment.getExternalStorageDirectory().toString() + "/Pictures")
         if (!dir.exists()) {
             dir.mkdirs()
         }
@@ -826,8 +830,6 @@ class Home : AppCompatActivity() {
     }
 
     fun selectImage(i: Int) {
-        recyclerView!!.visibility = View.INVISIBLE
-        itemConst!!.visibility = View.VISIBLE
         imageView!!.setImageDrawable(imageList!![i])
     }
 
