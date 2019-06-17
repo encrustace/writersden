@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -541,24 +542,20 @@ class Home : AppCompatActivity() {
     }
 
     private fun takeScreenshot(): Bitmap {
-        imageConst!!.isDrawingCacheEnabled = true
-        imageConst!!.buildDrawingCache(true)
-        val b = Bitmap.createBitmap(imageConst!!.drawingCache)
-        imageConst!!.isDrawingCacheEnabled = false
+        val b = Bitmap.createBitmap(imageConst!!.height, imageConst!!.width, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(b)
+        imageConst!!.draw(canvas)
         return b
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
-        val dir = File(Environment.getExternalStorageDirectory().toString() + "/Pictures")
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
+
         var n = 0
-        var path = File("$dir/wd$n.jpg")
+        var path = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
         while (true) {
             if (path.exists()) {
                 n++
-                path = File("$dir/wd$n.jpg")
+                path = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
             } else {
                 break
             }
@@ -870,7 +867,7 @@ class Home : AppCompatActivity() {
 
         try {
             val files = assetManager.list("fonts")
-            fontNamesList = LinkedList(Arrays.asList(*files))
+            fontNamesList = LinkedList(Arrays.asList(*files!!))
         } catch (e: IOException) {
             e.printStackTrace()
         }
