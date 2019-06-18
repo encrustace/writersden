@@ -38,7 +38,7 @@ dependencies {
     //Crop
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     //Admob
-    implementation 'com.google.android.gms:play-services-ads:17.2.1'
+    implementation 'com.google.android.gms:play-services-ads:18.0.0'
 }
 repositories {
     mavenCentral()
