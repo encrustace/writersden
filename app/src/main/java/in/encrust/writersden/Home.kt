@@ -411,7 +411,7 @@ class Home : AppCompatActivity() {
 
         //Edit text
         editButton.setOnClickListener {
-            editTextMethod(currentText!!.text.trim().toString(), currentText!!.gravity)
+            editTextMethod(currentText!!.text.toString(), currentText!!.gravity)
         }
 
         //Text Size
@@ -551,11 +551,11 @@ class Home : AppCompatActivity() {
     private fun saveBitmap(bitmap: Bitmap) {
 
         var n = 0
-        var path = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
+        var path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
         while (true) {
             if (path.exists()) {
                 n++
-                path = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
+                path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
             } else {
                 break
             }
@@ -664,7 +664,7 @@ class Home : AppCompatActivity() {
 
         builder.setView(editConstraint)
         builder.setPositiveButton("Submit") { _, _ ->
-            currentText!!.text = " " + dEditText.text + " "
+            currentText!!.text = dEditText.text
             currentText!!.gravity = dEditText.gravity
         }.setNegativeButton("Cancel") { _, _ -> }
 
@@ -776,7 +776,7 @@ class Home : AppCompatActivity() {
 
         val set = ConstraintSet()
         set.clone(imageConst!!)
-        textArray!![id].text = " $text "
+        textArray!![id].text = text
         textArray!![id].id = id
         textArray!![id].isClickable = true
         textArray!![id].setPadding(10, 10, 10, 10)
@@ -789,7 +789,7 @@ class Home : AppCompatActivity() {
         set.connect(textArray!![id].id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0)
         set.connect(textArray!![id].id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0)
         set.constrainHeight(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
-        set.constrainWidth(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
+        set.constrainWidth(textArray!![id].id, ConstraintSet.MATCH_CONSTRAINT)
         set.applyTo(imageConst!!)
         id += 1
     }
