@@ -551,11 +551,11 @@ class Home : AppCompatActivity() {
     private fun saveBitmap(bitmap: Bitmap) {
 
         var n = 0
-        var path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
+        var path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "wd$n.png")
         while (true) {
             if (path.exists()) {
                 n++
-                path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "wd$n.jpg")
+                path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "wd$n.png")
             } else {
                 break
             }
@@ -563,7 +563,7 @@ class Home : AppCompatActivity() {
         val fileOutputStream: FileOutputStream
         try {
             fileOutputStream = FileOutputStream(path)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
             fileOutputStream.flush()
             fileOutputStream.close()
         } catch (e: FileNotFoundException) {
