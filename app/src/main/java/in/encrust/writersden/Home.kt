@@ -2,6 +2,7 @@ package `in`.encrust.writersden
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -18,10 +19,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.util.TypedValue
-import android.view.GestureDetector
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -100,6 +98,7 @@ class Home : AppCompatActivity() {
         recyclerView = findViewById(R.id.home_recycler)
         stylingConst = findViewById(R.id.styling_const)
         val colorButton = findViewById<Button>(R.id.text_color)
+        val boldButton = findViewById<Button>(R.id.text_bold)
         val fontButton = findViewById<Button>(R.id.text_font)
         val editButton = findViewById<Button>(R.id.edit_text)
         sizeMinus = findViewById(R.id.seek_size_minus)
@@ -534,6 +533,15 @@ class Home : AppCompatActivity() {
             openColorPicker()
         }
 
+        //Bold
+        boldButton.setOnClickListener{
+            if (currentText!!.typeface == Typeface.DEFAULT_BOLD){
+                currentText!!.typeface = Typeface.DEFAULT
+            }else {
+                currentText!!.typeface = Typeface.DEFAULT_BOLD
+            }
+        }
+
         //Font changer
         fontButton.setOnClickListener {
             openFontChanger(currentText!!.text.toString())
@@ -779,17 +787,18 @@ class Home : AppCompatActivity() {
         textArray!![id].text = text
         textArray!![id].id = id
         textArray!![id].isClickable = true
-        textArray!![id].setPadding(10, 10, 10, 10)
+        textArray!![id].setPadding(20, 10, 20, 10)
         textArray!![id].gravity = gravity!!
         textArray!![id].paintFlags = View.INVISIBLE
         textArray!![id].setTextColor(Color.parseColor("#FF000000"))
+        textArray!![id].setTextSize(TypedValue.COMPLEX_UNIT_PX, 40f)
         imageConst!!.addView(textArray!![id])
         set.connect(textArray!![id].id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0)
         set.connect(textArray!![id].id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
         set.connect(textArray!![id].id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0)
         set.connect(textArray!![id].id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0)
         set.constrainHeight(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
-        set.constrainWidth(textArray!![id].id, ConstraintSet.MATCH_CONSTRAINT)
+        set.constrainWidth(textArray!![id].id, ConstraintSet.WRAP_CONTENT)
         set.applyTo(imageConst!!)
         id += 1
     }

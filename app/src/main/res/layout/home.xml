@@ -107,6 +107,7 @@
             android:id="@+id/item_const"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -158,6 +159,7 @@
             android:layout_height="0dp"
             android:background="@color/colorAccent"
             android:elevation="8dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -484,8 +486,23 @@
                 android:text="@string/color"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/edit_text"
+                app:layout_constraintEnd_toStartOf="@+id/text_bold"
                 app:layout_constraintStart_toStartOf="parent" />
+
+
+            <Button
+                android:id="@+id/text_bold"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/colorWhite"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:text="@string/bold"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/edit_text"
+                ads:layout_constraintStart_toEndOf="@+id/text_color" />
 
 
             <Button
@@ -500,7 +517,7 @@
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_font"
-                app:layout_constraintStart_toEndOf="@+id/text_color" />
+                app:layout_constraintStart_toEndOf="@+id/text_bold" />
 
 
             <Button

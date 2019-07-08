@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Writers Den</string>
     <string name="color">Color</string>
+    <string name="bold">Bold</string>
     <string name="text">Text</string>
     <string name="font">Font</string>
     <string name="zero">00</string>
